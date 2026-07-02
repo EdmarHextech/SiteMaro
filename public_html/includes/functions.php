@@ -1,23 +1,22 @@
 <?php
 require_once __DIR__ . '/config.php';
-
-const DIAS_SEMANA = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
-const MESES = ['', 'jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+require_once __DIR__ . '/i18n.php';
 
 function e(?string $value): string
 {
     return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
 }
 
-/** Retorna as partes formatadas de uma data de evento para exibição em destaque. */
+/** Retorna as partes formatadas de uma data de evento para exibição em destaque, no idioma atual. */
 function formatar_data_evento(string $data, string $hora): array
 {
     $ts = strtotime($data . ' ' . $hora);
+    $strings = carregar_traducoes(current_lang());
     return [
         'dia' => date('d', $ts),
-        'mes' => MESES[(int) date('n', $ts)],
+        'mes' => $strings['meses'][(int) date('n', $ts)],
         'ano' => date('Y', $ts),
-        'dia_semana' => DIAS_SEMANA[(int) date('w', $ts)],
+        'dia_semana' => $strings['dias_semana'][(int) date('w', $ts)],
         'hora' => substr($hora, 0, 5),
     ];
 }

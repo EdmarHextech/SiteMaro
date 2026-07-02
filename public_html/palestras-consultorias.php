@@ -1,18 +1,18 @@
 <?php
 require_once __DIR__ . '/includes/functions.php';
-$page_title = 'Palestras e Consultorias — Maro Camargo';
-$page_description = 'Palestras, consultorias e facilitação de World Café com Maro Camargo para empresas, escolas, ONGs e comunidades.';
+$page_title = t('pc.title');
+$page_description = t('pc.description');
 require __DIR__ . '/includes/header.php';
 ?>
 
 <section class="hero" style="padding:90px 0 70px;">
   <div class="container" style="grid-template-columns: 1fr; text-align:center;">
     <div>
-      <p class="hero-kicker">Palestras &amp; Consultorias</p>
-      <h1>Diálogo aplicado a pessoas, times e organizações</h1>
-      <p class="lead" style="margin:0 auto;">Formatos sob medida, unindo pesquisa acadêmica e vivência de campo em educação, cultura organizacional e metodologias participativas.</p>
+      <p class="hero-kicker"><?= e(t('pc.hero.kicker')) ?></p>
+      <h1><?= e(t('pc.hero.title')) ?></h1>
+      <p class="lead" style="margin:0 auto;"><?= e(t('pc.hero.lead')) ?></p>
       <div class="hero-actions" style="justify-content:center;">
-        <a href="/contato.php" class="btn btn-primary">Solicitar proposta</a>
+        <a href="/contato.php" class="btn btn-primary"><?= e(t('pc.hero.cta')) ?></a>
       </div>
     </div>
   </div>
@@ -22,30 +22,30 @@ require __DIR__ . '/includes/header.php';
   <div class="container">
     <div class="grid grid-3">
       <div class="service-card">
-        <h3>Palestras</h3>
-        <p>Conteúdos inspiradores e embasados para eventos corporativos, educacionais e institucionais.</p>
+        <h3><?= e(t('pc.card1.title')) ?></h3>
+        <p><?= e(t('pc.card1.desc')) ?></p>
         <ul>
-          <li>Diálogo e conexão em tempos de polarização</li>
-          <li>Cultura organizacional e escuta ativa</li>
-          <li>Educação, comunidade e transformação social</li>
+          <li><?= e(t('pc.card1.li1')) ?></li>
+          <li><?= e(t('pc.card1.li2')) ?></li>
+          <li><?= e(t('pc.card1.li3')) ?></li>
         </ul>
       </div>
       <div class="service-card">
-        <h3>Consultoria</h3>
-        <p>Acompanhamento de processos participativos para equipes e organizações em momentos de mudança.</p>
+        <h3><?= e(t('pc.card2.title')) ?></h3>
+        <p><?= e(t('pc.card2.desc')) ?></p>
         <ul>
-          <li>Diagnóstico de cultura e comunicação interna</li>
-          <li>Desenho de processos de diálogo e decisão coletiva</li>
-          <li>Projetos educativos institucionais</li>
+          <li><?= e(t('pc.card2.li1')) ?></li>
+          <li><?= e(t('pc.card2.li2')) ?></li>
+          <li><?= e(t('pc.card2.li3')) ?></li>
         </ul>
       </div>
       <div class="service-card">
-        <h3>World Café &amp; Facilitação</h3>
-        <p>Condução de rodas de conversa e metodologias colaborativas para temas complexos.</p>
+        <h3><?= e(t('pc.card3.title')) ?></h3>
+        <p><?= e(t('pc.card3.desc')) ?></p>
         <ul>
-          <li>Facilitação de World Café presencial ou online</li>
-          <li>Mediação de conflitos socioambientais</li>
-          <li>Formação de facilitadores e educadores comunitários</li>
+          <li><?= e(t('pc.card3.li1')) ?></li>
+          <li><?= e(t('pc.card3.li2')) ?></li>
+          <li><?= e(t('pc.card3.li3')) ?></li>
         </ul>
       </div>
     </div>
@@ -55,26 +55,26 @@ require __DIR__ . '/includes/header.php';
 <section class="section section--dark">
   <div class="container">
     <div class="section-head">
-      <p class="eyebrow">Para quem</p>
-      <h2>Empresas, escolas, ONGs e comunidades</h2>
-      <p style="color:var(--teal-100);">Experiência consolidada em Terceiro Setor, educação e ambientes corporativos, com abordagem participativa e baseada em evidências.</p>
+      <p class="eyebrow"><?= e(t('pc.audience.eyebrow')) ?></p>
+      <h2><?= e(t('pc.audience.title')) ?></h2>
+      <p style="color:var(--teal-100);"><?= e(t('pc.audience.lead')) ?></p>
     </div>
     <div class="topics-tags" style="justify-content:center;">
-      <span>Educação de adultos</span>
-      <span>Formação de professores</span>
-      <span>Agenda 21</span>
-      <span>Educação Ambiental</span>
-      <span>Cultura e lazer</span>
-      <span>Educação global</span>
+      <span><?= e(t('pc.audience.tag1')) ?></span>
+      <span><?= e(t('pc.audience.tag2')) ?></span>
+      <span><?= e(t('pc.audience.tag3')) ?></span>
+      <span><?= e(t('pc.audience.tag4')) ?></span>
+      <span><?= e(t('pc.audience.tag5')) ?></span>
+      <span><?= e(t('pc.audience.tag6')) ?></span>
     </div>
   </div>
 </section>
 
 <section class="section" style="text-align:center;">
   <div class="container" style="max-width:640px;">
-    <p class="eyebrow">Vamos conversar sobre o seu contexto?</p>
-    <h2>Solicite uma proposta personalizada</h2>
-    <a href="/contato.php" class="btn btn-accent">Falar com a Maro</a>
+    <p class="eyebrow"><?= e(t('pc.cta.eyebrow')) ?></p>
+    <h2><?= e(t('pc.cta.title')) ?></h2>
+    <a href="/contato.php" class="btn btn-accent"><?= e(t('common.talk_to_maro')) ?></a>
   </div>
 </section>
 

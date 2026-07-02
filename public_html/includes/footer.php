@@ -3,26 +3,26 @@
   <div class="container site-footer__inner">
     <div class="site-footer__brand">
       <img src="/assets/img/logo-maro-white.png" alt="Maro Camargo" class="brand-logo brand-logo--footer">
-      <p>Diálogo, educação e conexões que transformam.</p>
+      <p><?= e(t('footer.tagline')) ?></p>
     </div>
     <div class="site-footer__links">
-      <p class="site-footer__heading">Navegação</p>
-      <a href="/sobre.php">Sobre</a>
-      <a href="/livro.php">O Livro</a>
-      <a href="/palestras-consultorias.php">Palestras &amp; Consultorias</a>
-      <a href="/agenda.php">Agenda</a>
-      <a href="/contato.php">Contato</a>
+      <p class="site-footer__heading"><?= e(t('footer.nav_heading')) ?></p>
+      <a href="/sobre.php"><?= e(t('nav.about')) ?></a>
+      <a href="/livro.php"><?= e(t('nav.book')) ?></a>
+      <a href="/palestras-consultorias.php"><?= e(t('nav.services')) ?></a>
+      <a href="/agenda.php"><?= e(t('nav.agenda')) ?></a>
+      <a href="/contato.php"><?= e(t('nav.contact')) ?></a>
     </div>
     <div class="site-footer__social">
-      <p class="site-footer__heading">Conecte-se</p>
+      <p class="site-footer__heading"><?= e(t('footer.connect_heading')) ?></p>
       <a href="<?= e(INSTAGRAM_URL) ?>" target="_blank" rel="noopener">Instagram</a>
       <a href="<?= e(LINKEDIN_URL) ?>" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="<?= e(LATTES_URL) ?>" target="_blank" rel="noopener">Currículo Lattes</a>
+      <a href="<?= e(LATTES_URL) ?>" target="_blank" rel="noopener"><?= e(t('footer.lattes')) ?></a>
     </div>
   </div>
   <div class="site-footer__bottom">
     <div class="container">
-      <p>&copy; <?= date('Y') ?> Maro Camargo. Todos os direitos reservados.</p>
+      <p>&copy; <?= date('Y') ?> Maro Camargo. <?= e(t('footer.rights')) ?></p>
     </div>
   </div>
 </footer>

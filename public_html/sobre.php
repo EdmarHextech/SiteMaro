@@ -1,16 +1,16 @@
 <?php
 require_once __DIR__ . '/includes/functions.php';
-$page_title = 'Sobre Maro Camargo — Trajetória e Formação';
-$page_description = 'Conheça a trajetória acadêmica e profissional de Maro Camargo: doutorado pela USP, doutorado-sanduíche na Ohio State University, mestrado em Ciência Ambiental e atuação em educação, diálogo e Terceiro Setor.';
+$page_title = t('sobre.title');
+$page_description = t('sobre.description');
 require __DIR__ . '/includes/header.php';
 ?>
 
 <section class="hero" style="padding:80px 0 70px;">
   <div class="container" style="grid-template-columns: 1fr; text-align:center;">
     <div>
-      <p class="hero-kicker">Sobre</p>
-      <h1>Maria Eugênia "Maro" Camargo</h1>
-      <p class="lead" style="margin:0 auto;">Doutora em Educação, pesquisadora de metodologias de diálogo e facilitadora de processos participativos para organizações, comunidades e times.</p>
+      <p class="hero-kicker"><?= e(t('sobre.hero.kicker')) ?></p>
+      <h1><?= e(t('sobre.hero.title')) ?></h1>
+      <p class="lead" style="margin:0 auto;"><?= e(t('sobre.hero.lead')) ?></p>
     </div>
   </div>
 </section>
@@ -20,26 +20,26 @@ require __DIR__ . '/includes/header.php';
     <div class="about-photo">
       <img src="/assets/img/maro-camargo.jpg" alt="Maro Camargo">
       <div class="topics-tags" style="margin-top:24px;">
-        <span>Diálogo</span>
-        <span>World Café</span>
-        <span>Educação Ambiental</span>
-        <span>Cultura Organizacional</span>
-        <span>Facilitação</span>
-        <span>Formação de Educadores</span>
+        <span><?= e(t('sobre.tag.dialogo')) ?></span>
+        <span><?= e(t('sobre.tag.world_cafe')) ?></span>
+        <span><?= e(t('sobre.tag.educacao_ambiental')) ?></span>
+        <span><?= e(t('sobre.tag.cultura_organizacional')) ?></span>
+        <span><?= e(t('sobre.tag.facilitacao')) ?></span>
+        <span><?= e(t('sobre.tag.formacao_educadores')) ?></span>
       </div>
     </div>
     <div>
-      <p class="eyebrow">Trajetória</p>
-      <h2>Ciência, sensibilidade e prática de campo</h2>
-      <p>Doutora em Educação pela Faculdade de Educação da Universidade de São Paulo (FEUSP), na área de Cultura, Organização e Educação, com pesquisa desenvolvida na APA Embu-Verde, no município de Embu das Artes, região metropolitana de São Paulo.</p>
-      <p>Realizou estágio de doutorado-sanduíche com bolsa da Capes/Fulbright na Ohio State University, em Columbus, Ohio (EUA), com o objetivo de aprofundar os estudos sobre a metodologia World Café — diálogo e facilitação de processos em assuntos complexos.</p>
-      <p>É bacharel e licenciada em Ciências Biológicas pela USP (2002) e mestre em Ciência Ambiental pelo PROCAM/USP (2006), com dissertação sobre metodologias participativas como jogos de papéis (RPG) para negociação de conflitos socioambientais.</p>
+      <p class="eyebrow"><?= e(t('sobre.trajectory.eyebrow')) ?></p>
+      <h2><?= e(t('sobre.trajectory.title')) ?></h2>
+      <p><?= e(t('sobre.trajectory.p1')) ?></p>
+      <p><?= e(t('sobre.trajectory.p2')) ?></p>
+      <p><?= e(t('sobre.trajectory.p3')) ?></p>
 
       <ul class="credentials">
-        <li>🎓 <div><strong>Doutorado em Educação</strong> — FEUSP, Cultura, Organização e Educação</div></li>
-        <li>🌎 <div><strong>Doutorado-sanduíche</strong> — Ohio State University (EUA), bolsa Capes/Fulbright, metodologia World Café</div></li>
-        <li>🌱 <div><strong>Mestrado em Ciência Ambiental</strong> — PROCAM/USP, metodologias participativas e RPG para conflitos socioambientais</div></li>
-        <li>🔬 <div><strong>Graduação em Ciências Biológicas</strong> — USP (bacharelado e licenciatura), 2002</div></li>
+        <li>🎓 <div><strong><?= e(t('sobre.credential1_title')) ?></strong> — <?= e(t('sobre.credential1_desc')) ?></div></li>
+        <li>🌎 <div><strong><?= e(t('sobre.credential2_title')) ?></strong> — <?= e(t('sobre.credential2_desc')) ?></div></li>
+        <li>🌱 <div><strong><?= e(t('sobre.credential3_title')) ?></strong> — <?= e(t('sobre.credential3_desc')) ?></div></li>
+        <li>🔬 <div><strong><?= e(t('sobre.credential4_title')) ?></strong> — <?= e(t('sobre.credential4_desc')) ?></div></li>
       </ul>
     </div>
   </div>
@@ -48,21 +48,21 @@ require __DIR__ . '/includes/header.php';
 <section class="section section--tint">
   <div class="container">
     <div class="section-head">
-      <p class="eyebrow">Atuação hoje</p>
-      <h2>Docência, consultoria e empreendedorismo digital</h2>
+      <p class="eyebrow"><?= e(t('sobre.today.eyebrow')) ?></p>
+      <h2><?= e(t('sobre.today.title')) ?></h2>
     </div>
     <div class="grid grid-3">
       <div class="service-card">
-        <h3>Professora universitária</h3>
-        <p>Atua como docente no IPOG e na PUC Campinas, formando novas gerações de profissionais e educadores.</p>
+        <h3><?= e(t('sobre.today.card1_title')) ?></h3>
+        <p><?= e(t('sobre.today.card1_desc')) ?></p>
       </div>
       <div class="service-card">
-        <h3>Consultora de projetos educativos</h3>
-        <p>Desenvolve e conduz projetos educativos e processos de diálogo para organizações e instituições de ensino.</p>
+        <h3><?= e(t('sobre.today.card2_title')) ?></h3>
+        <p><?= e(t('sobre.today.card2_desc')) ?></p>
       </div>
       <div class="service-card">
-        <h3>Empreendedora digital</h3>
-        <p>Leva conteúdo, cursos e vivências sobre diálogo e conexão humana para públicos além da sala de aula.</p>
+        <h3><?= e(t('sobre.today.card3_title')) ?></h3>
+        <p><?= e(t('sobre.today.card3_desc')) ?></p>
       </div>
     </div>
   </div>
@@ -71,31 +71,31 @@ require __DIR__ . '/includes/header.php';
 <section class="section">
   <div class="container">
     <div class="section-head">
-      <p class="eyebrow">Terceiro Setor</p>
-      <h2>Temas e frentes de atuação</h2>
-      <p>Experiência multidisciplinar, com ênfase em Educação Ambiental, atuando em ONGs, projetos sociais e iniciativas comunitárias.</p>
+      <p class="eyebrow"><?= e(t('sobre.thirdsector.eyebrow')) ?></p>
+      <h2><?= e(t('sobre.thirdsector.title')) ?></h2>
+      <p><?= e(t('sobre.thirdsector.lead')) ?></p>
     </div>
     <div class="topics-tags" style="justify-content:center;">
-      <span>Agenda 21</span>
-      <span>Educação de adultos</span>
-      <span>Cultura e lazer</span>
-      <span>Comunidade</span>
-      <span>Educação global</span>
-      <span>Formação de educadores comunitários</span>
-      <span>Formação de professores</span>
-      <span>Desenvolvimento científico</span>
-      <span>Diálogo e facilitação de processos participativos</span>
+      <span><?= e(t('sobre.thirdsector.tag1')) ?></span>
+      <span><?= e(t('sobre.thirdsector.tag2')) ?></span>
+      <span><?= e(t('sobre.thirdsector.tag3')) ?></span>
+      <span><?= e(t('sobre.thirdsector.tag4')) ?></span>
+      <span><?= e(t('sobre.thirdsector.tag5')) ?></span>
+      <span><?= e(t('sobre.thirdsector.tag6')) ?></span>
+      <span><?= e(t('sobre.thirdsector.tag7')) ?></span>
+      <span><?= e(t('sobre.thirdsector.tag8')) ?></span>
+      <span><?= e(t('sobre.thirdsector.tag9')) ?></span>
     </div>
   </div>
 </section>
 
 <section class="section section--dark" style="text-align:center;">
   <div class="container" style="max-width:640px;">
-    <p class="eyebrow">Currículo</p>
-    <h2>Trajetória acadêmica completa</h2>
-    <p style="color:var(--teal-100);">Consulte o currículo completo na Plataforma Lattes (CNPq) ou conecte-se pelo LinkedIn.</p>
+    <p class="eyebrow"><?= e(t('sobre.cta.eyebrow')) ?></p>
+    <h2><?= e(t('sobre.cta.title')) ?></h2>
+    <p style="color:var(--teal-100);"><?= e(t('sobre.cta.lead')) ?></p>
     <div class="hero-actions" style="justify-content:center;">
-      <a href="<?= e(LATTES_URL) ?>" target="_blank" rel="noopener" class="btn btn-primary">Currículo Lattes</a>
+      <a href="<?= e(LATTES_URL) ?>" target="_blank" rel="noopener" class="btn btn-primary"><?= e(t('footer.lattes')) ?></a>
       <a href="<?= e(LINKEDIN_URL) ?>" target="_blank" rel="noopener" class="btn btn-outline">LinkedIn</a>
     </div>
   </div>

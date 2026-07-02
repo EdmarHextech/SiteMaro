@@ -37,9 +37,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <meta name="robots" content="noindex, nofollow">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/style.css">
+<script>
+(function () {
+  try {
+    var saved = localStorage.getItem('theme');
+    var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+  } catch (e) {}
+})();
+</script>
 </head>
 <body class="admin-body">
   <div class="login-shell">
+    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Alternar tema claro/escuro" aria-pressed="false">
+      <span class="icon-light">☀️</span><span class="icon-dark">🌙</span>
+    </button>
     <div class="login-card">
       <h1>Painel da Maro</h1>
       <p class="sub">Acesso restrito para atualizar a agenda</p>
@@ -60,5 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </form>
     </div>
   </div>
+<script src="/assets/js/main.js"></script>
 </body>
 </html>
