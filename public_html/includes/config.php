@@ -1,0 +1,45 @@
+<?php
+/**
+ * Configuração do site — edite os valores abaixo ao publicar na hospedagem definitiva.
+ * Em desenvolvimento local, os valores padrão já apontam para o banco criado via Homebrew.
+ */
+
+// ---------- Banco de dados ----------
+// No cPanel da HostGator, crie o banco e o usuário em "Bancos de Dados MySQL"
+// e substitua os valores abaixo pelos gerados lá (geralmente prefixados com o usuário cPanel, ex: usuario_marocamargo).
+define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+define('DB_NAME', getenv('DB_NAME') ?: 'marocamargo_db');
+define('DB_USER', getenv('DB_USER') ?: 'marocamargo_user');
+define('DB_PASS', getenv('DB_PASS') ?: 'devpassword123');
+
+// ---------- Site ----------
+define('SITE_NAME', 'Maro Camargo');
+define('SITE_URL', getenv('SITE_URL') ?: 'https://marocamargo.com.br');
+define('SITE_EMAIL', 'contato@marocamargo.com.br');
+define('INSTAGRAM_URL', 'https://www.instagram.com/camargomaro/');
+define('LINKEDIN_URL', 'https://www.linkedin.com/in/marocamargo/');
+define('LATTES_URL', 'https://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K4766457A4');
+
+// ---------- Admin ----------
+// Usuário e senha de acesso ao painel /admin.
+// Senha padrão de desenvolvimento: MudarSenha123!  (TROQUE antes de publicar em produção)
+// Para gerar um novo hash de senha, rode no terminal:
+//   php -r "echo password_hash('SUA_SENHA_AQUI', PASSWORD_DEFAULT), PHP_EOL;"
+// e cole o resultado abaixo em ADMIN_PASSWORD_HASH.
+define('ADMIN_USERNAME', getenv('ADMIN_USERNAME') ?: 'maro');
+define('ADMIN_PASSWORD_HASH', getenv('ADMIN_PASSWORD_HASH') ?: '$2y$12$aWJsxYkp7AO08zM0DWnG5evku/mU2923T1gf5Az7PTd4060kNTJZS');
+
+// ---------- Conexão PDO ----------
+function db(): PDO
+{
+    static $pdo = null;
+    if ($pdo === null) {
+        $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4';
+        $pdo = new PDO($dsn, DB_USER, DB_PASS, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false,
+        ]);
+    }
+    return $pdo;
+}
