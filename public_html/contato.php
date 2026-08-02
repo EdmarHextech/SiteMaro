@@ -56,8 +56,12 @@ require __DIR__ . '/includes/header.php';
       <h2><?= e(t('contato.direct.title')) ?></h2>
       <ul class="contact-list">
         <li><a href="mailto:<?= e(SITE_EMAIL) ?>">✉️ <?= e(SITE_EMAIL) ?></a></li>
+        <li><a href="https://wa.me/<?= e(WHATSAPP_NUMBER) ?>?text=<?= urlencode(WHATSAPP_MESSAGE) ?>" target="_blank" rel="noopener">💬 <?= e(t('contato.direct.whatsapp')) ?></a></li>
         <li><a href="<?= e(INSTAGRAM_URL) ?>" target="_blank" rel="noopener">📷 <?= e(t('contato.direct.instagram')) ?></a></li>
         <li><a href="<?= e(LINKEDIN_URL) ?>" target="_blank" rel="noopener">💼 LinkedIn</a></li>
+        <li><a href="<?= e(YOUTUBE_URL) ?>" target="_blank" rel="noopener">▶️ YouTube</a></li>
+        <li><a href="<?= e(FACEBOOK_URL) ?>" target="_blank" rel="noopener">👍 Facebook</a></li>
+        <li><a href="<?= e(MEDIUM_URL) ?>" target="_blank" rel="noopener">✍️ Medium</a></li>
         <li><a href="<?= e(LATTES_URL) ?>" target="_blank" rel="noopener">🎓 <?= e(t('footer.lattes')) ?></a></li>
       </ul>
     </div>

@@ -236,6 +236,7 @@ return [
     'contato.hero.lead' => 'Palestras, consultorias, o livro Ponto de Encontro ou parcerias — escolha o canal que preferir.',
     'contato.direct.eyebrow' => 'Canais diretos',
     'contato.direct.title' => 'Fale diretamente com a Maro',
+    'contato.direct.whatsapp' => 'WhatsApp — fale diretamente',
     'contato.direct.instagram' => 'Instagram — @camargomaro',
     'contato.form.eyebrow' => 'Envie uma mensagem',
     'contato.form.title' => 'Formulário de contato',

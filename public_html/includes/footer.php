@@ -21,6 +21,10 @@
       <p class="site-footer__heading"><?= e(t('footer.connect_heading')) ?></p>
       <a href="<?= e(INSTAGRAM_URL) ?>" target="_blank" rel="noopener">Instagram</a>
       <a href="<?= e(LINKEDIN_URL) ?>" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="<?= e(YOUTUBE_URL) ?>" target="_blank" rel="noopener">YouTube</a>
+      <a href="<?= e(FACEBOOK_URL) ?>" target="_blank" rel="noopener">Facebook</a>
+      <a href="<?= e(MEDIUM_URL) ?>" target="_blank" rel="noopener">Medium</a>
+      <a href="https://wa.me/<?= e(WHATSAPP_NUMBER) ?>?text=<?= urlencode(WHATSAPP_MESSAGE) ?>" target="_blank" rel="noopener">WhatsApp</a>
       <a href="<?= e(LATTES_URL) ?>" target="_blank" rel="noopener"><?= e(t('footer.lattes')) ?></a>
     </div>
   </div>
