@@ -4,6 +4,9 @@ RewriteEngine On
 RewriteCond %{HTTPS} off
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+# Sitemap dinâmico (inclui os posts do blog automaticamente)
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
+
 # Impede acesso direto a arquivos sensíveis
 <FilesMatch "\.(sql|md)$">
   Require all denied
