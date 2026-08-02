@@ -1,6 +1,8 @@
 <?php
 /** @var string $page_title */
 /** @var string $page_description */
+/** @var string|null $page_canonical  URL canônica completa (padrão: SITE_URL) */
+/** @var string|null $page_og_image   URL absoluta da imagem de OG (padrão: foto da Maro) */
 require_once __DIR__ . '/functions.php';
 current_lang(); // resolve e persiste o idioma (via cookie) antes de qualquer saída HTML
 $current = basename($_SERVER['SCRIPT_NAME']);
@@ -11,10 +13,11 @@ $current = basename($_SERVER['SCRIPT_NAME']);
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?= e($page_title ?? SITE_NAME) ?></title>
 <meta name="description" content="<?= e($page_description ?? t('meta.default_description')) ?>">
-<link rel="canonical" href="<?= e(SITE_URL) ?>">
+<link rel="canonical" href="<?= e($page_canonical ?? SITE_URL) ?>">
 <meta property="og:title" content="<?= e($page_title ?? SITE_NAME) ?>">
 <meta property="og:description" content="<?= e($page_description ?? t('meta.default_description')) ?>">
-<meta property="og:image" content="<?= e(SITE_URL) ?>/assets/img/maro-camargo.jpg">
+<meta property="og:image" content="<?= e($page_og_image ?? (SITE_URL . '/assets/img/maro-camargo.jpg')) ?>">
+<meta property="og:url" content="<?= e($page_canonical ?? SITE_URL) ?>">
 <meta property="og:type" content="website">
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/img/favicon-96x96.png" sizes="96x96" type="image/png">
@@ -48,6 +51,10 @@ $current = basename($_SERVER['SCRIPT_NAME']);
       <a href="/livro.php" class="<?= $current === 'livro.php' ? 'is-active' : '' ?>"><?= e(t('nav.book')) ?></a>
       <a href="/palestras-consultorias.php" class="<?= $current === 'palestras-consultorias.php' ? 'is-active' : '' ?>"><?= e(t('nav.services')) ?></a>
       <a href="/agenda.php" class="<?= $current === 'agenda.php' ? 'is-active' : '' ?>"><?= e(t('nav.agenda')) ?></a>
+      <a href="/agende-um-horario.php" class="<?= $current === 'agende-um-horario.php' ? 'is-active' : '' ?>"><?= e(t('nav.schedule_slot')) ?></a>
+      <a href="/blog.php" class="<?= in_array($current, ['blog.php', 'blog-post.php'], true) ? 'is-active' : '' ?>"><?= e(t('nav.blog')) ?></a>
+      <a href="/loja.php" class="<?= $current === 'loja.php' ? 'is-active' : '' ?>"><?= e(t('nav.store')) ?></a>
+      <a href="/galeria.php" class="<?= $current === 'galeria.php' ? 'is-active' : '' ?>"><?= e(t('nav.gallery')) ?></a>
       <a href="/contato.php" class="<?= $current === 'contato.php' ? 'is-active' : '' ?> nav-cta"><?= e(t('nav.contact')) ?></a>
       <div class="header-utils">
         <div class="lang-switch">

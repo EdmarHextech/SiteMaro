@@ -11,7 +11,7 @@ if ($id && !$evento) {
 
 $erro = null;
 $valores = $evento ?? [
-    'titulo' => '', 'tipo' => 'palestra', 'local' => '', 'link_inscricao' => '',
+    'titulo' => '', 'tipo' => 'palestra', 'local' => '', 'link_inscricao' => '', 'video_youtube_url' => '',
     'data_evento' => '', 'hora_evento' => '', 'vagas' => '', 'descricao' => '', 'ativo' => 1,
 ];
 
@@ -24,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'tipo' => in_array($_POST['tipo'] ?? '', ['palestra', 'consultoria', 'workshop', 'outro'], true) ? $_POST['tipo'] : 'palestra',
             'local' => trim($_POST['local'] ?? ''),
             'link_inscricao' => trim($_POST['link_inscricao'] ?? ''),
+            'video_youtube_url' => trim($_POST['video_youtube_url'] ?? ''),
             'data_evento' => trim($_POST['data_evento'] ?? ''),
             'hora_evento' => trim($_POST['hora_evento'] ?? ''),
             'vagas' => trim($_POST['vagas'] ?? ''),
@@ -39,20 +40,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $erro = 'Informe um horário válido.';
         } elseif ($valores['link_inscricao'] !== '' && !filter_var($valores['link_inscricao'], FILTER_VALIDATE_URL)) {
             $erro = 'O link de inscrição deve ser uma URL válida (começando com https://).';
+        } elseif ($valores['video_youtube_url'] !== '' && (!filter_var($valores['video_youtube_url'], FILTER_VALIDATE_URL) || !extrair_youtube_id($valores['video_youtube_url']))) {
+            $erro = 'O link do vídeo deve ser uma URL válida do YouTube (youtube.com/watch?v=... ou youtu.be/...).';
         } elseif ($valores['vagas'] !== '' && (!ctype_digit($valores['vagas']) || (int) $valores['vagas'] < 0)) {
             $erro = 'Vagas deve ser um número inteiro positivo, ou deixe em branco.';
         } else {
             $vagas = $valores['vagas'] === '' ? null : (int) $valores['vagas'];
             $link = $valores['link_inscricao'] === '' ? null : $valores['link_inscricao'];
+            $video = $valores['video_youtube_url'] === '' ? null : $valores['video_youtube_url'];
             $descricao = $valores['descricao'] === '' ? null : $valores['descricao'];
 
             if ($id) {
-                $stmt = db()->prepare('UPDATE eventos SET titulo=?, tipo=?, local=?, link_inscricao=?, data_evento=?, hora_evento=?, vagas=?, descricao=?, ativo=? WHERE id=?');
-                $stmt->execute([$valores['titulo'], $valores['tipo'], $valores['local'], $link, $valores['data_evento'], $valores['hora_evento'], $vagas, $descricao, $valores['ativo'], $id]);
+                $stmt = db()->prepare('UPDATE eventos SET titulo=?, tipo=?, local=?, link_inscricao=?, video_youtube_url=?, data_evento=?, hora_evento=?, vagas=?, descricao=?, ativo=? WHERE id=?');
+                $stmt->execute([$valores['titulo'], $valores['tipo'], $valores['local'], $link, $video, $valores['data_evento'], $valores['hora_evento'], $vagas, $descricao, $valores['ativo'], $id]);
                 header('Location: /admin/eventos.php?msg=atualizado');
             } else {
-                $stmt = db()->prepare('INSERT INTO eventos (titulo, tipo, local, link_inscricao, data_evento, hora_evento, vagas, descricao, ativo) VALUES (?,?,?,?,?,?,?,?,?)');
-                $stmt->execute([$valores['titulo'], $valores['tipo'], $valores['local'], $link, $valores['data_evento'], $valores['hora_evento'], $vagas, $descricao, $valores['ativo']]);
+                $stmt = db()->prepare('INSERT INTO eventos (titulo, tipo, local, link_inscricao, video_youtube_url, data_evento, hora_evento, vagas, descricao, ativo) VALUES (?,?,?,?,?,?,?,?,?,?)');
+                $stmt->execute([$valores['titulo'], $valores['tipo'], $valores['local'], $link, $video, $valores['data_evento'], $valores['hora_evento'], $vagas, $descricao, $valores['ativo']]);
                 header('Location: /admin/eventos.php?msg=criado');
             }
             exit;
@@ -117,6 +121,12 @@ require __DIR__ . '/includes/admin_header.php';
         <label for="vagas">Vagas (opcional)</label>
         <input class="form-control" type="number" min="0" id="vagas" name="vagas" value="<?= e((string) $valores['vagas']) ?>" placeholder="Deixe em branco se ilimitado">
       </div>
+    </div>
+
+    <div class="form-group">
+      <label for="video_youtube_url">Vídeo-convite do YouTube (opcional)</label>
+      <input class="form-control" type="url" id="video_youtube_url" name="video_youtube_url" value="<?= e($valores['video_youtube_url']) ?>" placeholder="https://youtu.be/...">
+      <p class="form-hint">Para adicionar um vídeo: faça upload no <strong>YouTube Studio</strong>, em "Visibilidade" escolha <strong>Não listado</strong> (assim ele não aparece em buscas nem no seu canal — só quem tem o link consegue assistir), depois copie o link de compartilhamento e cole aqui.</p>
     </div>
 
     <div class="form-group">

@@ -11,6 +11,10 @@
       <a href="/livro.php"><?= e(t('nav.book')) ?></a>
       <a href="/palestras-consultorias.php"><?= e(t('nav.services')) ?></a>
       <a href="/agenda.php"><?= e(t('nav.agenda')) ?></a>
+      <a href="/agende-um-horario.php"><?= e(t('nav.schedule_slot')) ?></a>
+      <a href="/blog.php"><?= e(t('nav.blog')) ?></a>
+      <a href="/loja.php"><?= e(t('nav.store')) ?></a>
+      <a href="/galeria.php"><?= e(t('nav.gallery')) ?></a>
       <a href="/contato.php"><?= e(t('nav.contact')) ?></a>
     </div>
     <div class="site-footer__social">
@@ -26,6 +30,7 @@
     </div>
   </div>
 </footer>
+<?php require __DIR__ . '/whatsapp-float.php'; ?>
 <script src="/assets/js/main.js"></script>
 </body>
 </html>

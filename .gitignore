@@ -1,3 +1,15 @@
 .DS_Store
 **/.DS_Store
 .claude/
+
+# Segredos por ambiente — nunca versionar
+public_html/includes/config.local.php
+
+# Conteúdo enviado por upload (capas de blog, fotos de galeria, imagens de produto)
+public_html/assets/uploads/*
+!public_html/assets/uploads/.htaccess
+!public_html/assets/uploads/.gitkeep
+
+# Cache gerado pelo HTML Purifier (regenerado automaticamente, não precisa versionar)
+public_html/includes/cache/htmlpurifier/*
+!public_html/includes/cache/htmlpurifier/.gitkeep

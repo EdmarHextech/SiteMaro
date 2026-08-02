@@ -42,6 +42,18 @@ $eventos = buscar_eventos();
               <?php if (!empty($evento['descricao'])): ?>
                 <p style="margin:8px 0 0; color:var(--text-soft);"><?= e($evento['descricao']) ?></p>
               <?php endif; ?>
+              <?php $video_id = extrair_youtube_id($evento['video_youtube_url'] ?? null); ?>
+              <?php if ($video_id): ?>
+                <div class="agenda-video">
+                  <iframe
+                    src="https://www.youtube-nocookie.com/embed/<?= e($video_id) ?>"
+                    title="<?= e(t('agenda.video_label')) ?>"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+              <?php endif; ?>
               <?php if (!empty($evento['vagas'])): ?>
                 <span class="agenda-vagas"><?= e(str_replace('{n}', (string) (int) $evento['vagas'], t('common.spots_available'))) ?></span>
               <?php endif; ?>

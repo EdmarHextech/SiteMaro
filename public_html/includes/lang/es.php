@@ -9,6 +9,10 @@ return [
     'nav.book' => 'El Libro',
     'nav.services' => 'Charlas y Consultoría',
     'nav.agenda' => 'Agenda',
+    'nav.schedule_slot' => 'Reservar horario',
+    'nav.blog' => 'Blog',
+    'nav.store' => 'Tienda',
+    'nav.gallery' => 'Galería',
     'nav.contact' => 'Contacto',
     'theme.toggle_label' => 'Alternar tema claro/oscuro',
     'nav.open_menu' => 'Abrir menú',
@@ -18,6 +22,7 @@ return [
     'footer.connect_heading' => 'Conéctate',
     'footer.lattes' => 'Currículum Lattes',
     'footer.rights' => 'Todos los derechos reservados.',
+    'whatsapp.aria_label' => 'Hablar por WhatsApp',
 
     'meta.default_description' => 'Maro Camargo — Doctora en Educación, conferencista, consultora y autora de Ponto de Encontro.',
 
@@ -29,6 +34,7 @@ return [
     'common.subscribe' => 'Inscribirse',
     'common.spots_available' => '{n} cupos disponibles',
     'common.talk_to_maro' => 'Hablar con Maro',
+    'common.coming_soon' => 'Próximamente',
 
     // Inicio
     'home.title' => 'Maro Camargo — Diálogo, Educación y Conexiones que Transforman',
@@ -173,12 +179,54 @@ return [
     'agenda.hero.kicker' => 'Agenda',
     'agenda.hero.title' => 'Próximos encuentros',
     'agenda.hero.lead' => 'Fecha, hora, lugar e inscripción para las próximas charlas y consultorías con Maro.',
+    'agenda.video_label' => 'Video de invitación al evento',
     'agenda.empty.title' => 'No hay eventos programados por el momento',
     'agenda.empty.desc_prefix' => 'Sigue a Maro en',
     'agenda.empty.desc_link' => 'Instagram',
     'agenda.empty.desc_suffix' => 'para enterarte de las próximas fechas.',
     'agenda.cta.eyebrow' => '¿Quieres llevar a Maro a tu evento?',
     'agenda.cta.title' => 'Solicita una propuesta de charla o consultoría',
+
+    // Reservar horario
+    'agenda_horario.title' => 'Reservar un horario — Maro Camargo',
+    'agenda_horario.description' => 'Elige un horario disponible en la agenda de Maro Camargo para una conversación, sesión de coaching o reunión inicial.',
+    'agenda_horario.hero.kicker' => 'Agendamiento',
+    'agenda_horario.hero.title' => 'Elige un horario en mi agenda',
+    'agenda_horario.hero.lead' => 'Elige el día y el horario que mejor te funcionen — la confirmación y el enlace de la llamada llegan automáticamente a tu correo.',
+
+    // Blog
+    'blog.title' => 'Blog — Maro Camargo',
+    'blog.description' => 'Artículos y reflexiones de Maro Camargo sobre diálogo, educación y conexiones que transforman.',
+    'blog.hero.kicker' => 'Blog',
+    'blog.hero.title' => 'Reflexiones sobre diálogo y conexión',
+    'blog.hero.lead' => 'Artículos, bastidores y aprendizajes sobre educación, facilitación y conversaciones que transforman.',
+    'blog.empty.title' => 'Aún no hay posts publicados',
+    'blog.empty.desc' => 'Vuelve pronto para ver los primeros artículos.',
+    'blog.eyebrow' => 'Blog',
+    'blog.share.label' => 'Compartir:',
+    'blog.not_found.title' => 'Post no encontrado',
+    'blog.not_found.cta' => 'Volver al blog',
+
+    // Galería
+    'galeria.title' => 'Galería de Fotos — Maro Camargo',
+    'galeria.description' => 'Fotos de charlas, consultorías y eventos con Maro Camargo.',
+    'galeria.hero.kicker' => 'Galería',
+    'galeria.hero.title' => 'Momentos de charlas y eventos',
+    'galeria.hero.lead' => 'Registros de encuentros, charlas y consultorías con Maro.',
+    'galeria.soon.title' => 'Galería en construcción',
+    'galeria.soon.desc' => 'Pronto encontrarás aquí fotos de los últimos eventos y charlas. Mientras tanto, síguenos en Instagram.',
+    'galeria.soon.cta' => 'Ver en Instagram',
+
+    // Tienda
+    'loja.title' => 'Tienda — Maro Camargo',
+    'loja.description' => 'Compra el libro Ponto de Encontro y conoce las sesiones de coaching y consultoría de Maro Camargo.',
+    'loja.hero.kicker' => 'Tienda',
+    'loja.hero.title' => 'El libro y las sesiones de Maro',
+    'loja.hero.lead' => 'Próximamente: compra directa del libro Ponto de Encontro y sesiones de coaching y consultoría, con agendamiento integrado.',
+    'loja.soon.title' => 'Tienda en construcción',
+    'loja.soon.desc' => 'Estamos preparando la compra directa del libro (con opción de dedicatoria) y de las sesiones de coaching y consultoría. Mientras tanto, el libro ya está disponible en Amazon y puedes agendar una conversación directamente con Maro.',
+    'loja.soon.cta_amazon' => 'Comprar en Amazon',
+    'loja.soon.cta_agendar' => 'Agendar una conversación',
 
     // Contacto
     'contato.title' => 'Contacto — Maro Camargo',

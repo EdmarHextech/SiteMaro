@@ -1,0 +1,10 @@
+# Impede que qualquer arquivo enviado por upload seja executado como script.
+# Isso precisa existir ANTES de qualquer endpoint de upload entrar em produção —
+# é o principal controle de segurança contra upload de um .php disfarçado de imagem.
+php_flag engine off
+
+<FilesMatch "\.(php|phtml|php3|php4|php5|php7|phar|pht)$">
+  Require all denied
+</FilesMatch>
+
+Options -Indexes
