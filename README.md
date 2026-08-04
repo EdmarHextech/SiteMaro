@@ -117,7 +117,25 @@ O front-end (todas as páginas públicas e a navegação) está completo. O back
 | Blog | ✅ | ✅ `/admin/posts.php` |
 | Galeria de fotos | ✅ | ✅ `/admin/galeria.php` |
 | Loja — catálogo (livro + sessões) | ✅ | ✅ `/admin/produtos.php` |
-| Loja — checkout (Mercado Pago), frete, agendamento pós-compra | CTA via WhatsApp (provisório) | pendente |
+| Loja — carrinho + checkout Mercado Pago (produto físico, frete fixo) | ✅ | ✅ código completo (`checkout.php`, `checkout-processar.php`, `webhooks/mercadopago.php`, `/admin/pedidos.php`) — **requer credenciais reais do Mercado Pago para funcionar** (ver abaixo); sem elas, a loja mostra automaticamente "pagamento em configuração" com CTA via WhatsApp |
+| Loja — frete real (Melhor Envio), produtos de sessão + agendamento pós-compra | CTA via WhatsApp (provisório) | pendente |
+
+### Credenciais do Mercado Pago (bloqueante para o checkout funcionar)
+
+O checkout está com o código pronto, mas **sem `MP_PUBLIC_KEY`/`MP_ACCESS_TOKEN` configurados em `config.local.php`, a loja funciona só com CTA de WhatsApp** (nada quebra — é um fallback automático, ver `mp_configurado()` em `includes/config.php`). Passos:
+
+1. Criar conta grátis em https://www.mercadopago.com.br/developers.
+2. Em "Suas integrações", criar uma aplicação e pegar as **credenciais de teste** (para testar sem dinheiro real) em `config.local.php`:
+   ```php
+   putenv('MP_PUBLIC_KEY=TEST-xxxx');
+   putenv('MP_ACCESS_TOKEN=TEST-xxxx');
+   putenv('MP_WEBHOOK_SECRET=xxxx'); // gerado ao configurar o webhook no painel do MP
+   ```
+3. Configurar a URL do webhook no painel do Mercado Pago: `https://marocamargo.com.br/webhooks/mercadopago.php`.
+4. Testar com os [cartões de teste do Mercado Pago](https://www.mercadopago.com.br/developers/pt/docs/checkout-api/additional-content/your-integrations/test/cards) antes de trocar para credenciais de produção.
+5. Quando for para produção, trocar `TEST-xxxx` pelas credenciais de produção (a conta precisa estar verificada com CPF/CNPJ no Mercado Pago).
+
+Testado sem credenciais reais: carrinho (adicionar/atualizar/remover), degradação automática do checkout, criação de pedido, e-mail de confirmação, área admin de pedidos (lista, detalhe, override manual de status) e a validação de assinatura do webhook (com segredo de teste). O fluxo real de cobrança (tokenização de cartão + chamada à API do Mercado Pago) só pode ser validado de ponta a ponta com credenciais reais.
 
 ## Atualizando a agenda
 

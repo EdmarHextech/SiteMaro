@@ -39,6 +39,25 @@ define('AMAZON_BOOK_URL', 'https://www.amazon.com.br/Ponto-encontro-conversas-co
 define('WHATSAPP_NUMBER', '5511996407103');
 define('WHATSAPP_MESSAGE', 'Olá, Maro! Vim pelo site e gostaria de saber mais.');
 
+// ---------- Mercado Pago (Checkout Transparente) ----------
+// Credenciais reais de teste/produção só via config.local.php ou variáveis de ambiente —
+// diferente do DB_PASS acima, aqui NÃO existe fallback: sem credencial, a loja mostra
+// "checkout indisponível" em vez de arriscar processar algo com uma chave inválida.
+// Onde conseguir: crie uma conta grátis em https://www.mercadopago.com.br/developers,
+// vá em "Suas integrações" > crie uma aplicação > "Credenciais de teste" (para começar)
+// ou "Credenciais de produção" (quando for para o ar de verdade).
+define('MP_PUBLIC_KEY', getenv('MP_PUBLIC_KEY') ?: '');
+define('MP_ACCESS_TOKEN', getenv('MP_ACCESS_TOKEN') ?: '');
+define('MP_WEBHOOK_SECRET', getenv('MP_WEBHOOK_SECRET') ?: '');
+
+function mp_configurado(): bool
+{
+    return MP_PUBLIC_KEY !== '' && MP_ACCESS_TOKEN !== '';
+}
+
+// Frete fixo provisório (a Fase 7 substitui isso por cálculo real via Melhor Envio).
+define('FRETE_PADRAO_CENTAVOS', (int) (getenv('FRETE_PADRAO_CENTAVOS') ?: 1500));
+
 // ---------- Agendamento (Cal.com) ----------
 // Conta Cal.com da Maro (ou, em desenvolvimento, uma conta sandbox própria do dev) — sem "@", só o username.
 // Ela mesma configura, dentro do Cal.com, buffers entre compromissos, janelas de disponibilidade e conexão

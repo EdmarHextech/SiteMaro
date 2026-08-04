@@ -83,3 +83,44 @@ CREATE TABLE IF NOT EXISTS produtos (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_tipo_ativo (tipo, ativo)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS pedidos (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    codigo VARCHAR(20) NOT NULL UNIQUE,
+    cliente_nome VARCHAR(255) NOT NULL,
+    cliente_email VARCHAR(255) NOT NULL,
+    cliente_telefone VARCHAR(30) DEFAULT NULL,
+    cliente_cpf VARCHAR(20) DEFAULT NULL,
+    endereco_cep VARCHAR(9) DEFAULT NULL,
+    endereco_logradouro VARCHAR(255) DEFAULT NULL,
+    endereco_numero VARCHAR(20) DEFAULT NULL,
+    endereco_complemento VARCHAR(100) DEFAULT NULL,
+    endereco_bairro VARCHAR(100) DEFAULT NULL,
+    endereco_cidade VARCHAR(100) DEFAULT NULL,
+    endereco_uf CHAR(2) DEFAULT NULL,
+    subtotal_centavos INT UNSIGNED NOT NULL,
+    frete_centavos INT UNSIGNED NOT NULL DEFAULT 0,
+    total_centavos INT UNSIGNED NOT NULL,
+    metodo_pagamento ENUM('credit_card', 'debit_card', 'pix') DEFAULT NULL,
+    status ENUM('pendente', 'pago', 'recusado', 'cancelado', 'reembolsado') NOT NULL DEFAULT 'pendente',
+    mp_payment_id VARCHAR(64) DEFAULT NULL,
+    mp_status_detail VARCHAR(100) DEFAULT NULL,
+    ip_criacao VARCHAR(45) DEFAULT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_status (status),
+    INDEX idx_mp_payment_id (mp_payment_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS pedido_itens (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    pedido_id INT UNSIGNED NOT NULL,
+    produto_id INT UNSIGNED NOT NULL,
+    produto_nome_snapshot VARCHAR(255) NOT NULL,
+    preco_unitario_centavos INT UNSIGNED NOT NULL,
+    quantidade SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+    dedicatoria_texto VARCHAR(500) DEFAULT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_pedido_item_pedido FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE,
+    CONSTRAINT fk_pedido_item_produto FOREIGN KEY (produto_id) REFERENCES produtos(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

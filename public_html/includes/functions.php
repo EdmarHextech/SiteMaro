@@ -239,6 +239,53 @@ function gerar_slug_unico_produto(string $textoBase, ?int $ignorarId = null): st
     return $slug;
 }
 
+// ---------- Pedidos ----------
+/** Código de pedido com componente aleatório (evita enumeração via URL, ex: /pedido-confirmado.php?codigo=...). */
+function gerar_codigo_pedido(): string
+{
+    return 'MC-' . date('Ymd') . '-' . strtoupper(bin2hex(random_bytes(3)));
+}
+
+function buscar_pedido(int $id): ?array
+{
+    $stmt = db()->prepare('SELECT * FROM pedidos WHERE id = ?');
+    $stmt->execute([$id]);
+    $pedido = $stmt->fetch();
+    return $pedido ?: null;
+}
+
+function buscar_pedido_por_codigo(string $codigo): ?array
+{
+    $stmt = db()->prepare('SELECT * FROM pedidos WHERE codigo = ?');
+    $stmt->execute([$codigo]);
+    $pedido = $stmt->fetch();
+    return $pedido ?: null;
+}
+
+function buscar_itens_pedido(int $pedidoId): array
+{
+    $stmt = db()->prepare('SELECT * FROM pedido_itens WHERE pedido_id = ? ORDER BY id ASC');
+    $stmt->execute([$pedidoId]);
+    return $stmt->fetchAll();
+}
+
+/**
+ * Envia o e-mail de confirmação de pedido. Ponto único de saída de e-mail transacional —
+ * se `mail()` nativo se mostrar pouco confiável em produção, troca-se só esta função por
+ * PHPMailer/SMTP sem tocar em quem a chama (checkout-processar.php, webhook).
+ */
+function enviar_email_pedido(array $pedido): bool
+{
+    $assunto = 'Pedido ' . $pedido['codigo'] . ' — ' . SITE_NAME;
+    $corpo = "Olá, {$pedido['cliente_nome']}!\n\n"
+        . "Recebemos seu pedido {$pedido['codigo']}.\n"
+        . "Total: " . formatar_preco((int) $pedido['total_centavos']) . "\n"
+        . "Status: {$pedido['status']}\n\n"
+        . "Qualquer dúvida, responda este e-mail.\n";
+    $headers = "From: " . SITE_EMAIL . "\r\n";
+    return @mail($pedido['cliente_email'], $assunto, $corpo, $headers);
+}
+
 // ---------- Autenticação do admin ----------
 function iniciar_sessao(): void
 {
