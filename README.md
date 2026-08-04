@@ -120,6 +120,21 @@ O front-end (todas as páginas públicas e a navegação) está completo. O back
 | Loja — carrinho + checkout Mercado Pago (produto físico) | ✅ | ✅ código completo (`checkout.php`, `checkout-processar.php`, `webhooks/mercadopago.php`, `/admin/pedidos.php`) — **requer credenciais reais do Mercado Pago para funcionar** (ver abaixo); sem elas, a loja mostra automaticamente "pagamento em configuração" com CTA via WhatsApp |
 | Loja — frete real via Melhor Envio | ✅ | ✅ código completo (`includes/melhorenvio.php`, `frete-calcular.php`) — **requer token real do Melhor Envio**; sem ele, usa automaticamente um frete fixo (`FRETE_PADRAO_CENTAVOS`) sem quebrar o checkout |
 | Loja — produtos de sessão + agendamento pós-compra (Cal.com) | ✅ | ✅ código completo (`agendar-sessao.php`, `webhooks/calcom.php`) — **requer o link do tipo de evento no Cal.com cadastrado em cada produto de sessão** (`/admin/produto-form.php`) e o webhook configurado na conta real dela; sem isso, mostra "agendamento em finalização" com CTA via WhatsApp |
+| Loja — etiqueta de expedição (remetente + destinatário) | ✅ `/admin/pedido-etiqueta.php` | ✅ pronta — **requer o endereço de remetente preenchido** (ver abaixo); sem isso, mostra um aviso mas ainda imprime a etiqueta do destinatário |
+
+### Endereço do remetente (para a etiqueta de expedição)
+
+A etiqueta impressa em `/admin/pedido-etiqueta.php` (botão "🏷️ Etiqueta" em cada pedido físico) mostra sempre duas etiquetas — remetente e destinatário — no formato visual padrão dos Correios (bloco de endereço + CEP em destaque). **Não emite postagem nem código de rastreio real** — é só para imprimir e colar no pacote. Preencher o endereço de onde ela despacha em `config.local.php`:
+```php
+putenv('REMETENTE_NOME=Maro Camargo');
+putenv('REMETENTE_LOGRADOURO=Rua Exemplo');
+putenv('REMETENTE_NUMERO=123');
+putenv('REMETENTE_COMPLEMENTO=Apto 45'); // opcional
+putenv('REMETENTE_BAIRRO=Centro');
+putenv('REMETENTE_CIDADE=São Paulo');
+putenv('REMETENTE_UF=SP');
+putenv('REMETENTE_CEP=01310200');
+```
 
 ### Credenciais do Cal.com (agendamento geral + agendamento pós-compra de sessões)
 

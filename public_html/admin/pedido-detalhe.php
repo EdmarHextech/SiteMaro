@@ -36,7 +36,12 @@ require __DIR__ . '/includes/admin_header.php';
 
 <div class="admin-topbar">
   <h1>Pedido <?= e($pedido['codigo']) ?></h1>
-  <a href="/admin/pedidos.php" class="btn btn-ghost">← Voltar para pedidos</a>
+  <div class="table-actions">
+    <?php if (!$ehPedidoSessao): ?>
+      <a href="/admin/pedido-etiqueta.php?id=<?= (int) $pedido['id'] ?>" class="btn btn-teal" target="_blank">🏷️ Etiqueta de expedição</a>
+    <?php endif; ?>
+    <a href="/admin/pedidos.php" class="btn btn-ghost">← Voltar para pedidos</a>
+  </div>
 </div>
 
 <?php if ($erro): ?><div class="alert alert-error"><?= e($erro) ?></div><?php endif; ?>

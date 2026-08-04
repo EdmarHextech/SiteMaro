@@ -72,6 +72,24 @@ function melhor_envio_configurado(): bool
     return MELHOR_ENVIO_TOKEN !== '' && MELHOR_ENVIO_CEP_ORIGEM !== '';
 }
 
+// ---------- Endereço do remetente (etiqueta de expedição) ----------
+// Usado só para imprimir a etiqueta de remetente em /admin/pedido-etiqueta.php — não é o
+// mesmo cadastro do Melhor Envio (que só precisa do CEP para cotar frete). Preencher com o
+// endereço de onde ela realmente despacha os pedidos.
+define('REMETENTE_NOME', getenv('REMETENTE_NOME') ?: 'Maro Camargo');
+define('REMETENTE_LOGRADOURO', getenv('REMETENTE_LOGRADOURO') ?: '');
+define('REMETENTE_NUMERO', getenv('REMETENTE_NUMERO') ?: '');
+define('REMETENTE_COMPLEMENTO', getenv('REMETENTE_COMPLEMENTO') ?: '');
+define('REMETENTE_BAIRRO', getenv('REMETENTE_BAIRRO') ?: '');
+define('REMETENTE_CIDADE', getenv('REMETENTE_CIDADE') ?: '');
+define('REMETENTE_UF', getenv('REMETENTE_UF') ?: '');
+define('REMETENTE_CEP', getenv('REMETENTE_CEP') ?: MELHOR_ENVIO_CEP_ORIGEM);
+
+function remetente_configurado(): bool
+{
+    return REMETENTE_LOGRADOURO !== '' && REMETENTE_CIDADE !== '' && REMETENTE_CEP !== '';
+}
+
 // ---------- Agendamento (Cal.com) ----------
 // Conta Cal.com da Maro (ou, em desenvolvimento, uma conta sandbox própria do dev) — sem "@", só o username.
 // Ela mesma configura, dentro do Cal.com, buffers entre compromissos, janelas de disponibilidade e conexão

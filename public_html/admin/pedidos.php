@@ -53,7 +53,12 @@ $rotuloStatus = ['pendente' => 'Pendente', 'pago' => 'Pago', 'recusado' => 'Recu
           <td><?= e($pedido['metodo_pagamento'] ?? '—') ?></td>
           <td><span class="status-pill <?= $pedido['status'] === 'pago' ? 'ativo' : 'inativo' ?>"><?= e($rotuloStatus[$pedido['status']] ?? $pedido['status']) ?></span></td>
           <td><?= e(date('d/m/Y H:i', strtotime($pedido['created_at']))) ?></td>
-          <td><a href="/admin/pedido-detalhe.php?id=<?= (int) $pedido['id'] ?>" class="btn btn-ghost btn-sm">Ver</a></td>
+          <td class="table-actions">
+            <a href="/admin/pedido-detalhe.php?id=<?= (int) $pedido['id'] ?>" class="btn btn-ghost btn-sm">Ver</a>
+            <?php if (!empty($pedido['endereco_cep'])): ?>
+              <a href="/admin/pedido-etiqueta.php?id=<?= (int) $pedido['id'] ?>" class="btn btn-ghost btn-sm" target="_blank">🏷️ Etiqueta</a>
+            <?php endif; ?>
+          </td>
         </tr>
       <?php endforeach; ?>
     </tbody>

@@ -177,6 +177,13 @@ function buscar_foto_galeria(int $id): ?array
 }
 
 // ---------- Loja ----------
+/** Formata um CEP de 8 dígitos como "00000-000". Retorna como veio se não tiver 8 dígitos. */
+function formatar_cep(?string $cep): string
+{
+    $digitos = preg_replace('~\D~', '', (string) $cep);
+    return strlen($digitos) === 8 ? substr($digitos, 0, 5) . '-' . substr($digitos, 5) : (string) $cep;
+}
+
 function formatar_preco(int $centavos): string
 {
     return 'R$ ' . number_format($centavos / 100, 2, ',', '.');
