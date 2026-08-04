@@ -239,6 +239,7 @@ return [
     'loja.produto.dedicatoria_label' => '¿Quieres dedicatoria? Escribe el texto aquí',
     'loja.produto.dedicatoria_placeholder' => 'Ej: Para Fulana, con cariño',
     'loja.produto.cta_carrinho' => 'Añadir al carrito',
+    'loja.produto.cta_agendar_pagar' => 'Pagar y elegir horario',
     'loja.produto.ou_fale' => '¿Prefieres coordinarlo directamente? ',
 
     // Carrito
@@ -255,6 +256,7 @@ return [
     'carrinho.subtotal' => 'Subtotal',
     'carrinho.finalizar' => 'Finalizar compra',
     'carrinho.frete_aviso' => 'El envío se calcula en el próximo paso.',
+    'carrinho.agendamento_aviso' => 'Después del pago, eliges el horario de la sesión.',
 
     // Checkout
     'checkout.title' => 'Finalizar compra — Maro Camargo',
@@ -292,6 +294,17 @@ return [
     'pedido.pix.title' => 'Paga con Pix',
     'pedido.pix.copia_cola' => 'O copia el código abajo en la app de tu banco:',
     'pedido.voltar_loja' => 'Volver a la tienda',
+
+    // Agendar sesión (post-compra)
+    'agendar_sessao.title' => 'Elegir horario de la sesión',
+    'agendar_sessao.hero.kicker' => 'Pago confirmado',
+    'agendar_sessao.hero.title' => 'Ahora, elige el horario de tu sesión',
+    'agendar_sessao.hero.lead' => 'Selecciona el día y horario que mejor te funcionen.',
+    'agendar_sessao.ja_agendado' => 'Tu sesión ya está agendada para',
+    'agendar_sessao.sem_link.title' => 'Agendamiento en finalización',
+    'agendar_sessao.sem_link.desc' => '¡Tu pago fue confirmado! Estamos terminando de configurar el agendamiento — Maro coordinará el horario directamente contigo.',
+    'agendar_sessao.sem_link.whatsapp_msg' => '¡Hola, Maro! Pagué mi sesión, pedido',
+    'agendar_sessao.aviso_confirmacao' => 'Después de elegir el horario, recibirás la confirmación por correo.',
 
     // Contacto
     'contato.title' => 'Contacto — Maro Camargo',

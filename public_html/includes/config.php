@@ -80,6 +80,9 @@ define('CALCOM_USERNAME', getenv('CALCOM_USERNAME') ?: 'marocamargo');
 // Link de agendamento geral (usado em /agende-um-horario.php). Pode ser trocado por um link específico
 // de "tipo de evento" (ex: CALCOM_USERNAME . '/coaching-60min') quando ela definir as ofertas.
 define('CALCOM_LINK_GERAL', getenv('CALCOM_LINK_GERAL') ?: CALCOM_USERNAME);
+// Segredo do webhook "BOOKING_CREATED" configurado no painel do Cal.com (Settings > Webhooks),
+// usado para validar a assinatura em webhooks/calcom.php antes de confiar no agendamento recebido.
+define('CALCOM_WEBHOOK_SECRET', getenv('CALCOM_WEBHOOK_SECRET') ?: '');
 
 // ---------- Admin ----------
 // Usuário e senha de acesso ao painel /admin.

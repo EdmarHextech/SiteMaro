@@ -26,6 +26,7 @@ require __DIR__ . '/includes/header.php';
 
 $itens = carrinho_conteudo();
 $subtotal = carrinho_subtotal_centavos();
+$tipoCarrinho = carrinho_tipo();
 ?>
 
 <section class="hero" style="padding:70px 0 50px;">
@@ -65,13 +66,17 @@ $subtotal = carrinho_subtotal_centavos();
                   <?php endif; ?>
                 </td>
                 <td>
-                  <form method="post" style="display:flex; gap:6px; align-items:center;">
-                    <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
-                    <input type="hidden" name="acao" value="atualizar">
-                    <input type="hidden" name="produto_id" value="<?= (int) $item['produto']['id'] ?>">
-                    <input type="number" name="quantidade" min="1" max="20" value="<?= (int) $item['quantidade'] ?>" class="form-control" style="width:70px; padding:8px;">
-                    <button type="submit" class="btn btn-ghost btn-sm"><?= e(t('carrinho.atualizar')) ?></button>
-                  </form>
+                  <?php if ($item['produto']['tipo'] === 'sessao'): ?>
+                    1
+                  <?php else: ?>
+                    <form method="post" style="display:flex; gap:6px; align-items:center;">
+                      <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+                      <input type="hidden" name="acao" value="atualizar">
+                      <input type="hidden" name="produto_id" value="<?= (int) $item['produto']['id'] ?>">
+                      <input type="number" name="quantidade" min="1" max="20" value="<?= (int) $item['quantidade'] ?>" class="form-control" style="width:70px; padding:8px;">
+                      <button type="submit" class="btn btn-ghost btn-sm"><?= e(t('carrinho.atualizar')) ?></button>
+                    </form>
+                  <?php endif; ?>
                 </td>
                 <td><?= e(formatar_preco($item['subtotal_centavos'])) ?></td>
                 <td>
@@ -94,7 +99,11 @@ $subtotal = carrinho_subtotal_centavos();
         </p>
         <a href="/checkout.php" class="btn btn-teal"><?= e(t('carrinho.finalizar')) ?></a>
       </div>
-      <p class="form-hint" style="text-align:right; margin-top:6px;"><?= e(t('carrinho.frete_aviso')) ?></p>
+      <?php if ($tipoCarrinho === 'fisico'): ?>
+        <p class="form-hint" style="text-align:right; margin-top:6px;"><?= e(t('carrinho.frete_aviso')) ?></p>
+      <?php else: ?>
+        <p class="form-hint" style="text-align:right; margin-top:6px;"><?= e(t('carrinho.agendamento_aviso')) ?></p>
+      <?php endif; ?>
     <?php endif; ?>
   </div>
 </section>

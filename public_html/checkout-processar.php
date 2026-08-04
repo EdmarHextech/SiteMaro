@@ -38,6 +38,7 @@ if (empty($itens)) {
 }
 
 $subtotalCentavos = carrinho_subtotal_centavos();
+$ehSessao = carrinho_tipo() === 'sessao'; // produto de sessão: sem endereço/frete, agenda depois do pagamento
 
 // ---------- Valida dados do cliente e endereço ----------
 $cliente = $corpo['cliente'] ?? [];
@@ -61,7 +62,7 @@ $uf = strtoupper(trim((string) ($endereco['uf'] ?? '')));
 if ($nome === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($cpf) !== 11) {
     checkout_erro('Confira seus dados: nome, e-mail e CPF válidos são obrigatórios.');
 }
-if ($logradouro === '' || $numero === '' || $bairro === '' || $cidade === '' || strlen($uf) !== 2 || strlen($cep) !== 8) {
+if (!$ehSessao && ($logradouro === '' || $numero === '' || $bairro === '' || $cidade === '' || strlen($uf) !== 2 || strlen($cep) !== 8)) {
     checkout_erro('Confira o endereço de entrega — todos os campos (exceto complemento) são obrigatórios.');
 }
 
@@ -73,28 +74,32 @@ $isPix = $paymentMethodId === 'pix';
 $metodoPagamento = $isPix ? 'pix' : ((string) ($formData['payment_type_id'] ?? '') === 'debit_card' ? 'debit_card' : 'credit_card');
 
 // ---------- Recalcula o frete no servidor, a partir do CEP validado — nunca do preço exibido no cliente ----------
-$freteCentavos = FRETE_PADRAO_CENTAVOS;
+// (produto de sessão não tem frete: pula direto para o agendamento depois do pagamento)
+$freteCentavos = 0;
 $freteServico = null;
-if (melhor_envio_configurado()) {
-    try {
-        $opcoesFrete = me_calcular_frete($cep, $itens);
-        if (!empty($opcoesFrete)) {
-            $escolhida = null;
-            if ($freteServicoEscolhido !== null) {
-                foreach ($opcoesFrete as $opcao) {
-                    if ($opcao['servico'] === $freteServicoEscolhido) {
-                        $escolhida = $opcao;
-                        break;
+if (!$ehSessao) {
+    $freteCentavos = FRETE_PADRAO_CENTAVOS;
+    if (melhor_envio_configurado()) {
+        try {
+            $opcoesFrete = me_calcular_frete($cep, $itens);
+            if (!empty($opcoesFrete)) {
+                $escolhida = null;
+                if ($freteServicoEscolhido !== null) {
+                    foreach ($opcoesFrete as $opcao) {
+                        if ($opcao['servico'] === $freteServicoEscolhido) {
+                            $escolhida = $opcao;
+                            break;
+                        }
                     }
                 }
+                $escolhida ??= $opcoesFrete[0]; // mais barata, se a escolhida não existir mais na recotação
+                $freteCentavos = $escolhida['preco_centavos'];
+                $freteServico = $escolhida['servico'];
             }
-            $escolhida ??= $opcoesFrete[0]; // mais barata, se a escolhida não existir mais na recotação
-            $freteCentavos = $escolhida['preco_centavos'];
-            $freteServico = $escolhida['servico'];
+        } catch (MelhorEnvioException $e) {
+            error_log('[checkout] Falha ao recalcular frete para pedido: ' . $e->getMessage());
+            // segue com FRETE_PADRAO_CENTAVOS — não bloqueia a venda por uma instabilidade do Melhor Envio
         }
-    } catch (MelhorEnvioException $e) {
-        error_log('[checkout] Falha ao recalcular frete para pedido: ' . $e->getMessage());
-        // segue com FRETE_PADRAO_CENTAVOS — não bloqueia a venda por uma instabilidade do Melhor Envio
     }
 }
 $totalCentavos = $subtotalCentavos + $freteCentavos;
@@ -110,7 +115,8 @@ try {
         VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
     $stmt->execute([
         $codigo, $nome, $email, $telefone ?: null, $cpf,
-        $cep, $logradouro, $numero, $complemento ?: null, $bairro, $cidade, $uf,
+        $ehSessao ? null : $cep, $ehSessao ? null : $logradouro, $ehSessao ? null : $numero,
+        $ehSessao ? null : ($complemento ?: null), $ehSessao ? null : $bairro, $ehSessao ? null : $cidade, $ehSessao ? null : $uf,
         $subtotalCentavos, $freteCentavos, $freteServico, $totalCentavos, $metodoPagamento, 'pendente', $_SERVER['REMOTE_ADDR'] ?? null,
     ]);
     $pedidoId = (int) db()->lastInsertId();
@@ -189,4 +195,10 @@ if ($statusPedido === 'pago') {
     }
 }
 
-echo json_encode(['redirect' => '/pedido-confirmado.php?codigo=' . rawurlencode($codigo)]);
+// Sessão paga: manda direto para escolher o horário. Qualquer outro caso (físico, ou sessão
+// ainda não confirmada) vai para a tela de confirmação normal.
+$destino = ($ehSessao && $statusPedido === 'pago')
+    ? '/agendar-sessao.php?pedido=' . rawurlencode($codigo)
+    : '/pedido-confirmado.php?codigo=' . rawurlencode($codigo);
+
+echo json_encode(['redirect' => $destino]);

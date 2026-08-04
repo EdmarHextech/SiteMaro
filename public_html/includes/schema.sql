@@ -130,3 +130,8 @@ CREATE TABLE IF NOT EXISTS pedido_itens (
 -- (MySQL não suporta ADD COLUMN IF NOT EXISTS; confira antes com SHOW COLUMNS FROM pedidos
 -- LIKE 'frete_servico' se estiver rodando num banco que já existia antes desta linha.)
 ALTER TABLE pedidos ADD COLUMN frete_servico VARCHAR(50) DEFAULT NULL AFTER frete_centavos;
+
+-- Agendamento pós-compra (produtos do tipo "sessao", via Cal.com) — preenchido pelo
+-- webhook em webhooks/calcom.php quando o cliente escolhe um horário após pagar.
+ALTER TABLE pedidos ADD COLUMN agendamento_data_hora DATETIME DEFAULT NULL AFTER frete_servico;
+ALTER TABLE pedidos ADD COLUMN agendamento_referencia VARCHAR(255) DEFAULT NULL AFTER agendamento_data_hora;

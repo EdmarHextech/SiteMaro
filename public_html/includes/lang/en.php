@@ -239,6 +239,7 @@ return [
     'loja.produto.dedicatoria_label' => 'Want a signed dedication? Write the text here',
     'loja.produto.dedicatoria_placeholder' => 'E.g.: For Jane, with care',
     'loja.produto.cta_carrinho' => 'Add to cart',
+    'loja.produto.cta_agendar_pagar' => 'Pay and pick a time',
     'loja.produto.ou_fale' => 'Prefer to arrange it directly? ',
 
     // Cart
@@ -255,6 +256,7 @@ return [
     'carrinho.subtotal' => 'Subtotal',
     'carrinho.finalizar' => 'Checkout',
     'carrinho.frete_aviso' => 'Shipping is calculated in the next step.',
+    'carrinho.agendamento_aviso' => 'After payment, you\'ll pick the session time.',
 
     // Checkout
     'checkout.title' => 'Checkout — Maro Camargo',
@@ -292,6 +294,17 @@ return [
     'pedido.pix.title' => 'Pay with Pix',
     'pedido.pix.copia_cola' => 'Or copy the code below into your banking app:',
     'pedido.voltar_loja' => 'Back to the store',
+
+    // Book session (post-purchase)
+    'agendar_sessao.title' => 'Pick your session time',
+    'agendar_sessao.hero.kicker' => 'Payment confirmed',
+    'agendar_sessao.hero.title' => 'Now, pick a time for your session',
+    'agendar_sessao.hero.lead' => 'Choose the day and time that work best for you.',
+    'agendar_sessao.ja_agendado' => 'Your session is already booked for',
+    'agendar_sessao.sem_link.title' => 'Scheduling being finalized',
+    'agendar_sessao.sem_link.desc' => 'Your payment was confirmed! We\'re finishing setting up scheduling — Maro will arrange the time directly with you.',
+    'agendar_sessao.sem_link.whatsapp_msg' => 'Hi, Maro! I paid for my session, order',
+    'agendar_sessao.aviso_confirmacao' => 'After picking a time, you\'ll get a confirmation by email.',
 
     // Contact
     'contato.title' => 'Contact — Maro Camargo',

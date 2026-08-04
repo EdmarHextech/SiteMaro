@@ -13,7 +13,8 @@ require __DIR__ . '/includes/header.php';
 
 $itens = carrinho_conteudo();
 $subtotal = carrinho_subtotal_centavos();
-$frete = FRETE_PADRAO_CENTAVOS;
+$ehSessao = carrinho_tipo() === 'sessao';
+$frete = $ehSessao ? 0 : FRETE_PADRAO_CENTAVOS;
 $total = $subtotal + $frete;
 ?>
 
@@ -37,15 +38,17 @@ $total = $subtotal + $frete;
           <span><?= e(formatar_preco($item['subtotal_centavos'])) ?></span>
         </div>
       <?php endforeach; ?>
-      <div style="display:flex; justify-content:space-between; font-size:0.92rem; padding:6px 0; color:var(--text-soft); border-top:1px solid var(--border-soft); margin-top:8px;">
-        <span><?= e(t('checkout.frete')) ?></span>
-        <span id="resumoFrete"><?= e(formatar_preco($frete)) ?></span>
-      </div>
+      <?php if (!$ehSessao): ?>
+        <div style="display:flex; justify-content:space-between; font-size:0.92rem; padding:6px 0; color:var(--text-soft); border-top:1px solid var(--border-soft); margin-top:8px;">
+          <span><?= e(t('checkout.frete')) ?></span>
+          <span id="resumoFrete"><?= e(formatar_preco($frete)) ?></span>
+        </div>
+      <?php endif; ?>
       <div style="display:flex; justify-content:space-between; font-weight:700; font-size:1.1rem; color:var(--text-heading); padding-top:10px;">
         <span><?= e(t('checkout.total')) ?></span>
         <span id="resumoTotal"><?= e(formatar_preco($total)) ?></span>
       </div>
-      <p class="form-hint" style="margin-top:8px;"><?= e(t('checkout.valor_final_aviso')) ?></p>
+      <p class="form-hint" style="margin-top:8px;"><?= e($ehSessao ? t('carrinho.agendamento_aviso') : t('checkout.valor_final_aviso')) ?></p>
     </div>
 
     <?php if (!mp_configurado()): ?>
@@ -80,42 +83,44 @@ $total = $subtotal + $frete;
         </div>
       </div>
 
-      <div class="card" style="margin-bottom:24px;">
-        <h3 style="font-size:1.05rem; margin-bottom:16px;"><?= e(t('checkout.endereco.title')) ?></h3>
-        <div class="form-row">
+      <?php if (!$ehSessao): ?>
+        <div class="card" style="margin-bottom:24px;">
+          <h3 style="font-size:1.05rem; margin-bottom:16px;"><?= e(t('checkout.endereco.title')) ?></h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="endereco_cep"><?= e(t('checkout.cep')) ?></label>
+              <input class="form-control" type="text" id="endereco_cep" placeholder="00000-000" required>
+            </div>
+            <div class="form-group">
+              <label for="endereco_numero"><?= e(t('checkout.numero')) ?></label>
+              <input class="form-control" type="text" id="endereco_numero" required>
+            </div>
+          </div>
+          <div id="freteOpcoes" class="frete-opcoes"></div>
           <div class="form-group">
-            <label for="endereco_cep"><?= e(t('checkout.cep')) ?></label>
-            <input class="form-control" type="text" id="endereco_cep" placeholder="00000-000" required>
+            <label for="endereco_logradouro"><?= e(t('checkout.logradouro')) ?></label>
+            <input class="form-control" type="text" id="endereco_logradouro" required>
           </div>
           <div class="form-group">
-            <label for="endereco_numero"><?= e(t('checkout.numero')) ?></label>
-            <input class="form-control" type="text" id="endereco_numero" required>
+            <label for="endereco_complemento"><?= e(t('checkout.complemento')) ?></label>
+            <input class="form-control" type="text" id="endereco_complemento">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="endereco_bairro"><?= e(t('checkout.bairro')) ?></label>
+              <input class="form-control" type="text" id="endereco_bairro" required>
+            </div>
+            <div class="form-group">
+              <label for="endereco_cidade"><?= e(t('checkout.cidade')) ?></label>
+              <input class="form-control" type="text" id="endereco_cidade" required>
+            </div>
+          </div>
+          <div class="form-group" style="max-width:120px;">
+            <label for="endereco_uf"><?= e(t('checkout.uf')) ?></label>
+            <input class="form-control" type="text" id="endereco_uf" maxlength="2" required>
           </div>
         </div>
-        <div id="freteOpcoes" class="frete-opcoes"></div>
-        <div class="form-group">
-          <label for="endereco_logradouro"><?= e(t('checkout.logradouro')) ?></label>
-          <input class="form-control" type="text" id="endereco_logradouro" required>
-        </div>
-        <div class="form-group">
-          <label for="endereco_complemento"><?= e(t('checkout.complemento')) ?></label>
-          <input class="form-control" type="text" id="endereco_complemento">
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="endereco_bairro"><?= e(t('checkout.bairro')) ?></label>
-            <input class="form-control" type="text" id="endereco_bairro" required>
-          </div>
-          <div class="form-group">
-            <label for="endereco_cidade"><?= e(t('checkout.cidade')) ?></label>
-            <input class="form-control" type="text" id="endereco_cidade" required>
-          </div>
-        </div>
-        <div class="form-group" style="max-width:120px;">
-          <label for="endereco_uf"><?= e(t('checkout.uf')) ?></label>
-          <input class="form-control" type="text" id="endereco_uf" maxlength="2" required>
-        </div>
-      </div>
+      <?php endif; ?>
 
       <div class="card">
         <h3 style="font-size:1.05rem; margin-bottom:16px;"><?= e(t('checkout.pagamento.title')) ?></h3>
@@ -126,7 +131,7 @@ $total = $subtotal + $frete;
 </section>
 
 <?php if (mp_configurado()): ?>
-<script src="/assets/js/frete.js"></script>
+<?php if (!$ehSessao): ?><script src="/assets/js/frete.js"></script><?php endif; ?>
 <script src="https://sdk.mercadopago.com/js/v2"></script>
 <script>
 (function () {
@@ -134,6 +139,7 @@ $total = $subtotal + $frete;
   var erroBox = document.getElementById('checkoutErro');
   var csrfToken = <?= json_encode(csrf_token()) ?>;
   var subtotalCentavos = <?= json_encode($subtotal) ?>;
+  var ehSessao = <?= json_encode($ehSessao) ?>;
   var freteSelecionado = null; // atualizado via evento 'frete:selecionado' (assets/js/frete.js)
 
   function formatarPreco(centavos) {
@@ -154,7 +160,10 @@ $total = $subtotal + $frete;
   }
 
   function camposObrigatoriosPreenchidos() {
-    var ids = ['cliente_nome', 'cliente_email', 'cliente_cpf', 'endereco_cep', 'endereco_numero', 'endereco_logradouro', 'endereco_bairro', 'endereco_cidade', 'endereco_uf'];
+    var ids = ['cliente_nome', 'cliente_email', 'cliente_cpf'];
+    if (!ehSessao) {
+      ids = ids.concat(['endereco_cep', 'endereco_numero', 'endereco_logradouro', 'endereco_bairro', 'endereco_cidade', 'endereco_uf']);
+    }
     for (var i = 0; i < ids.length; i++) {
       var el = document.getElementById(ids[i]);
       if (!el.value.trim()) return false;
@@ -196,7 +205,7 @@ $total = $subtotal + $frete;
             telefone: document.getElementById('cliente_telefone').value.trim(),
             cpf: document.getElementById('cliente_cpf').value.trim(),
           },
-          endereco: {
+          endereco: ehSessao ? {} : {
             cep: document.getElementById('endereco_cep').value.trim(),
             numero: document.getElementById('endereco_numero').value.trim(),
             logradouro: document.getElementById('endereco_logradouro').value.trim(),

@@ -5,8 +5,10 @@
  * na hora de fechar o pedido — assim fica estruturalmente impossível confiar em um
  * preço adulterado vindo do cliente.
  *
- * Nesta fase, o carrinho só aceita produtos do tipo "fisico" (produtos "sessao" ganham
- * fluxo próprio de agendamento numa fase futura).
+ * Um carrinho só pode ter produtos de UM tipo por vez ("fisico" OU "sessao") — simplifica
+ * bastante o checkout, que ou pede endereço+frete (físico) ou pula direto pro agendamento
+ * pós-pagamento (sessão), sem precisar lidar com pedidos mistos. Produto de sessão sempre
+ * entra com quantidade 1 (cada sessão comprada = um agendamento próprio).
  */
 
 function carrinho_iniciar(): void
@@ -17,21 +19,36 @@ function carrinho_iniciar(): void
     }
 }
 
+/** Tipo dos produtos atualmente no carrinho ('fisico'|'sessao'), ou null se vazio. */
+function carrinho_tipo(): ?string
+{
+    $itens = carrinho_conteudo();
+    return $itens[0]['produto']['tipo'] ?? null;
+}
+
 function carrinho_adicionar(int $produtoId, int $quantidade, ?string $dedicatoriaTexto, ?string &$erro = null): bool
 {
     carrinho_iniciar();
-    $quantidade = max(1, min(20, $quantidade));
 
     $produto = buscar_produto($produtoId);
     if (!$produto || !$produto['ativo']) {
         $erro = 'Produto indisponível.';
         return false;
     }
-    if ($produto['tipo'] !== 'fisico') {
-        $erro = 'Este produto ainda não pode ser adicionado ao carrinho.';
+
+    $tipoAtual = carrinho_tipo();
+    if ($tipoAtual !== null && $tipoAtual !== $produto['tipo']) {
+        $erro = 'Seu carrinho já tem um tipo diferente de produto. Finalize ou esvazie o carrinho antes de adicionar este item.';
         return false;
     }
 
+    if ($produto['tipo'] === 'sessao') {
+        // Sessão: sempre 1 por pedido (cada compra vira um agendamento próprio depois do pagamento).
+        $_SESSION['carrinho'] = [$produtoId => ['quantidade' => 1, 'dedicatoria_texto' => null]];
+        return true;
+    }
+
+    $quantidade = max(1, min(20, $quantidade));
     $atual = $_SESSION['carrinho'][$produtoId]['quantidade'] ?? 0;
     $_SESSION['carrinho'][$produtoId] = [
         'quantidade' => max(1, min(20, $atual + $quantidade)),
@@ -49,6 +66,10 @@ function carrinho_atualizar_quantidade(int $produtoId, int $quantidade): void
     if ($quantidade <= 0) {
         unset($_SESSION['carrinho'][$produtoId]);
         return;
+    }
+    $produto = buscar_produto($produtoId);
+    if ($produto && $produto['tipo'] === 'sessao') {
+        return; // sessão é sempre 1 — não deixa burlar via "atualizar quantidade"
     }
     $_SESSION['carrinho'][$produtoId]['quantidade'] = max(1, min(20, $quantidade));
 }
@@ -75,7 +96,7 @@ function carrinho_conteudo(): array
     $itens = [];
     foreach ($_SESSION['carrinho'] as $produtoId => $dados) {
         $produto = buscar_produto((int) $produtoId);
-        if (!$produto || !$produto['ativo'] || $produto['tipo'] !== 'fisico') {
+        if (!$produto || !$produto['ativo']) {
             unset($_SESSION['carrinho'][$produtoId]);
             continue;
         }

@@ -119,6 +119,17 @@ O front-end (todas as páginas públicas e a navegação) está completo. O back
 | Loja — catálogo (livro + sessões) | ✅ | ✅ `/admin/produtos.php` |
 | Loja — carrinho + checkout Mercado Pago (produto físico) | ✅ | ✅ código completo (`checkout.php`, `checkout-processar.php`, `webhooks/mercadopago.php`, `/admin/pedidos.php`) — **requer credenciais reais do Mercado Pago para funcionar** (ver abaixo); sem elas, a loja mostra automaticamente "pagamento em configuração" com CTA via WhatsApp |
 | Loja — frete real via Melhor Envio | ✅ | ✅ código completo (`includes/melhorenvio.php`, `frete-calcular.php`) — **requer token real do Melhor Envio**; sem ele, usa automaticamente um frete fixo (`FRETE_PADRAO_CENTAVOS`) sem quebrar o checkout |
+| Loja — produtos de sessão + agendamento pós-compra (Cal.com) | ✅ | ✅ código completo (`agendar-sessao.php`, `webhooks/calcom.php`) — **requer o link do tipo de evento no Cal.com cadastrado em cada produto de sessão** (`/admin/produto-form.php`) e o webhook configurado na conta real dela; sem isso, mostra "agendamento em finalização" com CTA via WhatsApp |
+
+### Credenciais do Cal.com (agendamento geral + agendamento pós-compra de sessões)
+
+1. Ela cria conta grátis em https://cal.com, conecta o Google Agenda dela, e configura lá mesmo os buffers entre compromissos e as janelas de disponibilidade (nada disso é código — é 100% configuração no painel do Cal.com).
+2. Cria um "tipo de evento" para cada oferta (ex: "Sessão de Coaching 60min"), copia o link e cola em `CALCOM_LINK_GERAL` (`config.local.php`, usado em `/agende-um-horario.php`) e no campo "Link do tipo de evento" de cada produto de sessão em `/admin/produto-form.php`.
+3. Para o agendamento pós-compra funcionar (`webhooks/calcom.php`), em Settings > Webhooks no painel do Cal.com: criar um webhook apontando para `https://marocamargo.com.br/webhooks/calcom.php`, evento `BOOKING_CREATED`, e gerar um segredo — colar em `config.local.php`:
+   ```php
+   putenv('CALCOM_WEBHOOK_SECRET=xxxx');
+   ```
+4. **Atenção**: o formato exato do payload/metadata do webhook do Cal.com pode variar entre planos/versões — validar contra a conta real dela assim que estiver configurada (testado aqui apenas com payload simulado seguindo a documentação pública deles).
 | Loja — produtos de sessão + agendamento pós-compra | CTA via WhatsApp (provisório) | pendente |
 
 ### Credenciais do Melhor Envio (opcional — sem ela, usa frete fixo)

@@ -58,23 +58,30 @@ $mensagemWhatsapp = t('loja.produto.whatsapp_msg') . ' ' . $produto['nome'] . ' 
         <p class="form-hint">✒️ <?= e(t('loja.produto.dedicatoria')) ?></p>
       <?php endif; ?>
 
-      <?php if ($produto['tipo'] === 'fisico'): ?>
+      <?php $podeComprarOnline = $produto['tipo'] === 'fisico' || !empty($produto['calcom_link']); ?>
+      <?php if ($podeComprarOnline): ?>
         <form method="post" action="/carrinho.php" style="margin-top:24px; padding:22px 24px; background:var(--bg-tint); border-radius:var(--radius-md);">
           <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
           <input type="hidden" name="acao" value="adicionar">
           <input type="hidden" name="produto_id" value="<?= (int) $produto['id'] ?>">
-          <?php if ($produto['permite_dedicatoria']): ?>
+          <?php if ($produto['tipo'] === 'fisico' && $produto['permite_dedicatoria']): ?>
             <div class="form-group">
               <label for="dedicatoria_texto"><?= e(t('loja.produto.dedicatoria_label')) ?></label>
               <input class="form-control" type="text" id="dedicatoria_texto" name="dedicatoria_texto" maxlength="500" placeholder="<?= e(t('loja.produto.dedicatoria_placeholder')) ?>">
             </div>
           <?php endif; ?>
           <div class="form-row" style="align-items:end;">
-            <div class="form-group" style="margin-bottom:0;">
-              <label for="quantidade"><?= e(t('carrinho.col.qtd')) ?></label>
-              <input class="form-control" type="number" id="quantidade" name="quantidade" min="1" max="20" value="1" style="width:100px;">
-            </div>
-            <button type="submit" class="btn btn-teal" style="height:fit-content;"><?= e(t('loja.produto.cta_carrinho')) ?></button>
+            <?php if ($produto['tipo'] === 'fisico'): ?>
+              <div class="form-group" style="margin-bottom:0;">
+                <label for="quantidade"><?= e(t('carrinho.col.qtd')) ?></label>
+                <input class="form-control" type="number" id="quantidade" name="quantidade" min="1" max="20" value="1" style="width:100px;">
+              </div>
+            <?php else: ?>
+              <input type="hidden" name="quantidade" value="1">
+            <?php endif; ?>
+            <button type="submit" class="btn btn-teal" style="height:fit-content;">
+              <?= $produto['tipo'] === 'fisico' ? e(t('loja.produto.cta_carrinho')) : e(t('loja.produto.cta_agendar_pagar')) ?>
+            </button>
           </div>
           <?php if (!mp_configurado()): ?>
             <p class="form-hint" style="margin-top:14px;"><?= e(t('loja.produto.checkout_em_breve')) ?></p>

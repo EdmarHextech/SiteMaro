@@ -28,6 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $itens = buscar_itens_pedido($id);
+$primeiroProduto = !empty($itens) ? buscar_produto((int) $itens[0]['produto_id']) : null;
+$ehPedidoSessao = $primeiroProduto && $primeiroProduto['tipo'] === 'sessao';
 $admin_page_title = 'Pedido ' . $pedido['codigo'];
 require __DIR__ . '/includes/admin_header.php';
 ?>
@@ -48,13 +50,15 @@ require __DIR__ . '/includes/admin_header.php';
     <?= e($pedido['cliente_telefone'] ?? '—') ?><br>
     CPF: <?= e($pedido['cliente_cpf'] ?? '—') ?></p>
 
-    <h3 style="font-size:1rem; margin-top:20px;">Endereço de entrega</h3>
-    <p>
-      <?= e($pedido['endereco_logradouro'] ?? '') ?>, <?= e($pedido['endereco_numero'] ?? '') ?>
-      <?= !empty($pedido['endereco_complemento']) ? ' — ' . e($pedido['endereco_complemento']) : '' ?><br>
-      <?= e($pedido['endereco_bairro'] ?? '') ?> — <?= e($pedido['endereco_cidade'] ?? '') ?>/<?= e($pedido['endereco_uf'] ?? '') ?><br>
-      CEP: <?= e($pedido['endereco_cep'] ?? '—') ?>
-    </p>
+    <?php if (!$ehPedidoSessao): ?>
+      <h3 style="font-size:1rem; margin-top:20px;">Endereço de entrega</h3>
+      <p>
+        <?= e($pedido['endereco_logradouro'] ?? '') ?>, <?= e($pedido['endereco_numero'] ?? '') ?>
+        <?= !empty($pedido['endereco_complemento']) ? ' — ' . e($pedido['endereco_complemento']) : '' ?><br>
+        <?= e($pedido['endereco_bairro'] ?? '') ?> — <?= e($pedido['endereco_cidade'] ?? '') ?>/<?= e($pedido['endereco_uf'] ?? '') ?><br>
+        CEP: <?= e($pedido['endereco_cep'] ?? '—') ?>
+      </p>
+    <?php endif; ?>
 
     <h3 style="font-size:1rem; margin-top:20px;">Itens</h3>
     <?php foreach ($itens as $item): ?>
@@ -66,12 +70,24 @@ require __DIR__ . '/includes/admin_header.php';
         <span><?= e(formatar_preco((int) $item['preco_unitario_centavos'] * (int) $item['quantidade'])) ?></span>
       </div>
     <?php endforeach; ?>
-    <div style="display:flex; justify-content:space-between; padding-top:10px; border-top:1px solid var(--border-soft); margin-top:8px;">
-      <span>Frete<?= !empty($pedido['frete_servico']) ? ' (' . e($pedido['frete_servico']) . ')' : '' ?></span><span><?= e(formatar_preco((int) $pedido['frete_centavos'])) ?></span>
-    </div>
+    <?php if (!$ehPedidoSessao): ?>
+      <div style="display:flex; justify-content:space-between; padding-top:10px; border-top:1px solid var(--border-soft); margin-top:8px;">
+        <span>Frete<?= !empty($pedido['frete_servico']) ? ' (' . e($pedido['frete_servico']) . ')' : '' ?></span><span><?= e(formatar_preco((int) $pedido['frete_centavos'])) ?></span>
+      </div>
+    <?php endif; ?>
     <div style="display:flex; justify-content:space-between; font-weight:700; color:var(--text-heading);">
       <span>Total</span><span><?= e(formatar_preco((int) $pedido['total_centavos'])) ?></span>
     </div>
+
+    <?php if ($ehPedidoSessao): ?>
+      <h3 style="font-size:1rem; margin-top:20px;">Agendamento</h3>
+      <?php if ($pedido['agendamento_data_hora']): ?>
+        <p><?= e(date('d/m/Y \à\s H:i', strtotime($pedido['agendamento_data_hora']))) ?><br>
+        <span class="form-hint">Referência Cal.com: <?= e($pedido['agendamento_referencia'] ?? '—') ?></span></p>
+      <?php else: ?>
+        <p class="form-hint">Ainda não agendado<?= $pedido['status'] === 'pago' ? ' — considere entrar em contato se demorar' : '' ?>.</p>
+      <?php endif; ?>
+    <?php endif; ?>
   </div>
 
   <div class="card">
