@@ -31,6 +31,8 @@ $current = basename($_SERVER['SCRIPT_NAME']);
       <a href="/admin/evento-form.php" class="<?= $current === 'evento-form.php' ? 'is-active' : '' ?>">Novo evento</a>
       <a href="/admin/posts.php" class="<?= in_array($current, ['posts.php', 'post-form.php'], true) ? 'is-active' : '' ?>">Blog</a>
       <a href="/admin/post-form.php" class="<?= $current === 'post-form.php' ? 'is-active' : '' ?>">Novo post</a>
+      <a href="/admin/galeria.php" class="<?= in_array($current, ['galeria.php', 'foto-form.php'], true) ? 'is-active' : '' ?>">Galeria</a>
+      <a href="/admin/foto-form.php" class="<?= $current === 'foto-form.php' ? 'is-active' : '' ?>">Nova foto</a>
       <a href="/index.php" target="_blank">Ver site ↗</a>
       <a href="/admin/logout.php">Sair</a>
     </nav>

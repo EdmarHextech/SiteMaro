@@ -130,6 +130,35 @@ function gerar_slug_unico_post(string $textoBase, ?int $ignorarId = null): strin
     return $slug;
 }
 
+// ---------- Galeria ----------
+/** Fotos ativas, eventos primeiro (mais recentes), fotos sem evento por último. */
+function buscar_fotos_galeria(): array
+{
+    $sql = "SELECT gf.*, e.titulo AS evento_titulo, e.data_evento AS evento_data
+            FROM galeria_fotos gf
+            LEFT JOIN eventos e ON e.id = gf.evento_id
+            WHERE gf.ativo = 1
+            ORDER BY (gf.evento_id IS NULL) ASC, e.data_evento DESC, gf.ordem ASC, gf.id DESC";
+    return db()->query($sql)->fetchAll();
+}
+
+function buscar_fotos_galeria_admin(): array
+{
+    $sql = "SELECT gf.*, e.titulo AS evento_titulo
+            FROM galeria_fotos gf
+            LEFT JOIN eventos e ON e.id = gf.evento_id
+            ORDER BY gf.created_at DESC";
+    return db()->query($sql)->fetchAll();
+}
+
+function buscar_foto_galeria(int $id): ?array
+{
+    $stmt = db()->prepare('SELECT * FROM galeria_fotos WHERE id = ?');
+    $stmt->execute([$id]);
+    $foto = $stmt->fetch();
+    return $foto ?: null;
+}
+
 // ---------- Autenticação do admin ----------
 function iniciar_sessao(): void
 {

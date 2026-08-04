@@ -43,3 +43,18 @@ CREATE TABLE IF NOT EXISTS posts (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_status_publicado (status, publicado_em)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------- Galeria de fotos ----------
+CREATE TABLE IF NOT EXISTS galeria_fotos (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    evento_id INT UNSIGNED DEFAULT NULL,
+    arquivo VARCHAR(255) NOT NULL,
+    legenda VARCHAR(255) DEFAULT NULL,
+    pessoas_mencionadas VARCHAR(500) DEFAULT NULL,
+    ordem SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+    ativo TINYINT(1) NOT NULL DEFAULT 1,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_evento_id (evento_id),
+    CONSTRAINT fk_galeria_evento FOREIGN KEY (evento_id) REFERENCES eventos(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -115,7 +115,7 @@ O front-end (todas as páginas públicas e a navegação) está completo. O back
 | Agenda de eventos | ✅ | ✅ `/admin/eventos.php` |
 | Agendar horário (Cal.com) | ✅ | requer conta Cal.com real da Maro (por enquanto aponta para uma conta de testes) |
 | Blog | ✅ | ✅ `/admin/posts.php` |
-| Galeria de fotos | ✅ ("Em breve") | pendente |
+| Galeria de fotos | ✅ | ✅ `/admin/galeria.php` |
 | Loja (livro + sessões, Mercado Pago, frete) | ✅ ("Em breve") | pendente |
 
 ## Atualizando a agenda
