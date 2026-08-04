@@ -10,7 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($acao === 'adicionar' && $produtoId > 0) {
             $qtd = max(1, (int) ($_POST['quantidade'] ?? 1));
             $dedicatoria = $_POST['dedicatoria_texto'] ?? null;
-            carrinho_adicionar($produtoId, $qtd, $dedicatoria, $erroCarrinho);
+            if (!carrinho_adicionar($produtoId, $qtd, $dedicatoria, $erroCarrinho)) {
+                $_SESSION['flash_erro_carrinho'] = $erroCarrinho;
+            }
         } elseif ($acao === 'atualizar' && $produtoId > 0) {
             carrinho_atualizar_quantidade($produtoId, (int) ($_POST['quantidade'] ?? 0));
         } elseif ($acao === 'remover' && $produtoId > 0) {
@@ -23,6 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $page_title = t('carrinho.title');
 require __DIR__ . '/includes/header.php';
+
+$erroFlash = $_SESSION['flash_erro_carrinho'] ?? null;
+unset($_SESSION['flash_erro_carrinho']);
 
 $itens = carrinho_conteudo();
 $subtotal = carrinho_subtotal_centavos();
@@ -40,6 +45,7 @@ $tipoCarrinho = carrinho_tipo();
 
 <section class="section" style="padding-top:0;">
   <div class="container" style="max-width:760px;">
+    <?php if ($erroFlash): ?><div class="alert alert-error"><?= e($erroFlash) ?></div><?php endif; ?>
     <?php if (empty($itens)): ?>
       <div class="agenda-empty">
         <p><?= e(t('carrinho.empty')) ?></p>

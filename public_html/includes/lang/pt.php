@@ -240,6 +240,8 @@ return [
     'loja.produto.dedicatoria_placeholder' => 'Ex: Para Fulana, com carinho',
     'loja.produto.cta_carrinho' => 'Adicionar ao carrinho',
     'loja.produto.cta_agendar_pagar' => 'Pagar e escolher horário',
+    'loja.produto.esgotado_desc' => 'Este exemplar está esgotado no momento. Fale com a Maro para saber sobre disponibilidade futura.',
+    'loja.produto.poucas_unidades' => 'Restam apenas {n} unidade(s) — exemplares limitados.',
     'loja.produto.ou_fale' => 'Prefere combinar direto? ',
 
     // Carrinho

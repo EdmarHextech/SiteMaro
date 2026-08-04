@@ -37,6 +37,12 @@ if (empty($itens)) {
     checkout_erro('Seu carrinho está vazio.');
 }
 
+// Última checagem de estoque antes de cobrar — pode ter mudado desde que o item foi ao carrinho.
+$erroEstoque = validar_estoque_carrinho($itens);
+if ($erroEstoque !== null) {
+    checkout_erro($erroEstoque);
+}
+
 $subtotalCentavos = carrinho_subtotal_centavos();
 $ehSessao = carrinho_tipo() === 'sessao'; // produto de sessão: sem endereço/frete, agenda depois do pagamento
 
@@ -189,6 +195,7 @@ $stmtUpdate->execute([$statusPedido, $resposta['id'] ?? null, $resposta['status_
 carrinho_esvaziar();
 
 if ($statusPedido === 'pago') {
+    baixar_estoque_pedido($pedidoId);
     $pedidoAtualizado = buscar_pedido($pedidoId);
     if ($pedidoAtualizado) {
         enviar_email_pedido($pedidoAtualizado);

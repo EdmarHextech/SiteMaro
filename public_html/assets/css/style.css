@@ -566,6 +566,12 @@ ul { padding-left: 1.2em; }
 .produto-card__body h3 { font-size: 1.05rem; margin-bottom: 8px; }
 .produto-card__preco { color: var(--teal-600); font-weight: 700; margin: 0; }
 [data-theme="dark"] .produto-card__preco { color: var(--teal-300); }
+.produto-card--esgotado { opacity: 0.6; }
+.produto-card__badge {
+  display: inline-block; margin-top: 8px; background: #b3392f; color: #fff;
+  font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 3px 10px; border-radius: 999px;
+}
 
 /* ---------- Frete ---------- */
 .frete-opcoes { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 20px; }

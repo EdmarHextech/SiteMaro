@@ -75,6 +75,7 @@ $stmt = db()->prepare('UPDATE pedidos SET status=?, mp_payment_id=?, mp_status_d
 $stmt->execute([$novoStatus, $dataId, $pagamento['status_detail'] ?? null, $pedido['id']]);
 
 if ($novoStatus === 'pago' && $pedido['status'] !== 'pago') {
+    baixar_estoque_pedido((int) $pedido['id']);
     $pedidoAtualizado = buscar_pedido((int) $pedido['id']);
     if ($pedidoAtualizado) {
         enviar_email_pedido($pedidoAtualizado);

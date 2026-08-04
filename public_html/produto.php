@@ -58,8 +58,17 @@ $mensagemWhatsapp = t('loja.produto.whatsapp_msg') . ' ' . $produto['nome'] . ' 
         <p class="form-hint">✒️ <?= e(t('loja.produto.dedicatoria')) ?></p>
       <?php endif; ?>
 
-      <?php $podeComprarOnline = $produto['tipo'] === 'fisico' || !empty($produto['calcom_link']); ?>
-      <?php if ($podeComprarOnline): ?>
+      <?php
+        $esgotado = $produto['estoque'] !== null && (int) $produto['estoque'] <= 0;
+        $podeComprarOnline = !$esgotado && ($produto['tipo'] === 'fisico' || !empty($produto['calcom_link']));
+      ?>
+      <?php if ($esgotado): ?>
+        <div class="coming-soon" style="padding:24px 26px; margin-top:24px;">
+          <span class="coming-soon__badge" style="background:#f6d3cd; color:#b3392f;">Esgotado</span>
+          <p style="margin:12px 0 18px;"><?= e(t('loja.produto.esgotado_desc')) ?></p>
+          <a href="https://wa.me/<?= e(WHATSAPP_NUMBER) ?>?text=<?= urlencode($mensagemWhatsapp) ?>" target="_blank" rel="noopener" class="btn btn-teal"><?= e(t('loja.produto.cta_whatsapp')) ?></a>
+        </div>
+      <?php elseif ($podeComprarOnline): ?>
         <form method="post" action="/carrinho.php" style="margin-top:24px; padding:22px 24px; background:var(--bg-tint); border-radius:var(--radius-md);">
           <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
           <input type="hidden" name="acao" value="adicionar">
@@ -74,7 +83,7 @@ $mensagemWhatsapp = t('loja.produto.whatsapp_msg') . ' ' . $produto['nome'] . ' 
             <?php if ($produto['tipo'] === 'fisico'): ?>
               <div class="form-group" style="margin-bottom:0;">
                 <label for="quantidade"><?= e(t('carrinho.col.qtd')) ?></label>
-                <input class="form-control" type="number" id="quantidade" name="quantidade" min="1" max="20" value="1" style="width:100px;">
+                <input class="form-control" type="number" id="quantidade" name="quantidade" min="1" max="<?= $produto['estoque'] !== null ? (int) $produto['estoque'] : 20 ?>" value="1" style="width:100px;">
               </div>
             <?php else: ?>
               <input type="hidden" name="quantidade" value="1">
@@ -83,6 +92,9 @@ $mensagemWhatsapp = t('loja.produto.whatsapp_msg') . ' ' . $produto['nome'] . ' 
               <?= $produto['tipo'] === 'fisico' ? e(t('loja.produto.cta_carrinho')) : e(t('loja.produto.cta_agendar_pagar')) ?>
             </button>
           </div>
+          <?php if ($produto['tipo'] === 'fisico' && $produto['estoque'] !== null && (int) $produto['estoque'] <= 5): ?>
+            <p class="form-hint" style="margin-top:10px;"><?= e(str_replace('{n}', (string) (int) $produto['estoque'], t('loja.produto.poucas_unidades'))) ?></p>
+          <?php endif; ?>
           <?php if (!mp_configurado()): ?>
             <p class="form-hint" style="margin-top:14px;"><?= e(t('loja.produto.checkout_em_breve')) ?></p>
           <?php endif; ?>

@@ -240,6 +240,8 @@ return [
     'loja.produto.dedicatoria_placeholder' => 'E.g.: For Jane, with care',
     'loja.produto.cta_carrinho' => 'Add to cart',
     'loja.produto.cta_agendar_pagar' => 'Pay and pick a time',
+    'loja.produto.esgotado_desc' => 'This copy is currently sold out. Message Maro to ask about future availability.',
+    'loja.produto.poucas_unidades' => 'Only {n} unit(s) left — limited copies.',
     'loja.produto.ou_fale' => 'Prefer to arrange it directly? ',
 
     // Cart

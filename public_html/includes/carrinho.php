@@ -50,8 +50,17 @@ function carrinho_adicionar(int $produtoId, int $quantidade, ?string $dedicatori
 
     $quantidade = max(1, min(20, $quantidade));
     $atual = $_SESSION['carrinho'][$produtoId]['quantidade'] ?? 0;
+    $quantidadeFinal = max(1, min(20, $atual + $quantidade));
+
+    if ($produto['estoque'] !== null && $quantidadeFinal > (int) $produto['estoque']) {
+        $erro = (int) $produto['estoque'] > 0
+            ? 'Restam apenas ' . (int) $produto['estoque'] . ' unidade(s) em estoque.'
+            : 'Produto sem estoque no momento.';
+        return false;
+    }
+
     $_SESSION['carrinho'][$produtoId] = [
-        'quantidade' => max(1, min(20, $atual + $quantidade)),
+        'quantidade' => $quantidadeFinal,
         'dedicatoria_texto' => $produto['permite_dedicatoria'] && $dedicatoriaTexto ? mb_substr(trim($dedicatoriaTexto), 0, 500) : null,
     ];
     return true;
@@ -70,6 +79,13 @@ function carrinho_atualizar_quantidade(int $produtoId, int $quantidade): void
     $produto = buscar_produto($produtoId);
     if ($produto && $produto['tipo'] === 'sessao') {
         return; // sessão é sempre 1 — não deixa burlar via "atualizar quantidade"
+    }
+    if ($produto && $produto['estoque'] !== null) {
+        $quantidade = min($quantidade, max(0, (int) $produto['estoque']));
+        if ($quantidade === 0) {
+            unset($_SESSION['carrinho'][$produtoId]);
+            return;
+        }
     }
     $_SESSION['carrinho'][$produtoId]['quantidade'] = max(1, min(20, $quantidade));
 }

@@ -277,6 +277,49 @@ function buscar_itens_pedido(int $pedidoId): array
 }
 
 /**
+ * Verifica se cada item do carrinho ainda cabe no estoque atual (produtos com estoque
+ * NULL = ilimitado, nunca bloqueiam). Retorna null se tudo certo, ou uma mensagem de erro
+ * com o primeiro item que não couber — usado como última checagem no servidor antes de
+ * cobrar, já que o estoque pode ter mudado entre "adicionar ao carrinho" e "finalizar".
+ */
+function validar_estoque_carrinho(array $itensCarrinho): ?string
+{
+    foreach ($itensCarrinho as $item) {
+        $produto = buscar_produto((int) $item['produto']['id']); // relê o estoque mais atual, não o do momento em que foi ao carrinho
+        if (!$produto) {
+            return 'Um dos produtos do carrinho não está mais disponível.';
+        }
+        if ($produto['estoque'] !== null && (int) $item['quantidade'] > (int) $produto['estoque']) {
+            return 'Restam apenas ' . (int) $produto['estoque'] . ' unidade(s) de "' . $produto['nome'] . '" em estoque.';
+        }
+    }
+    return null;
+}
+
+/**
+ * Desconta do estoque os itens de um pedido já pago. Só mexe em produtos com estoque
+ * controlado (não NULL). Usa UPDATE...WHERE estoque >= quantidade para ser atômico — se
+ * duas compras concorrentes disputarem a última unidade, só uma consegue decrementar aqui;
+ * a outra já foi cobrada antes (checkout não é 100% livre dessa janela de corrida em alto
+ * volume, mas para o volume desta loja o risco é desprezível) — fica logado para conferência manual.
+ */
+function baixar_estoque_pedido(int $pedidoId): void
+{
+    $itens = buscar_itens_pedido($pedidoId);
+    foreach ($itens as $item) {
+        $produto = buscar_produto((int) $item['produto_id']);
+        if (!$produto || $produto['estoque'] === null) {
+            continue;
+        }
+        $stmt = db()->prepare('UPDATE produtos SET estoque = estoque - ? WHERE id = ? AND estoque >= ?');
+        $stmt->execute([$item['quantidade'], $produto['id'], $item['quantidade']]);
+        if ($stmt->rowCount() === 0) {
+            error_log('[estoque] Pedido ' . $pedidoId . ': falha ao baixar estoque de "' . $produto['nome'] . '" (possível concorrência ou estoque já zerado) — conferir manualmente.');
+        }
+    }
+}
+
+/**
  * Envia o e-mail de confirmação de pedido. Ponto único de saída de e-mail transacional —
  * se `mail()` nativo se mostrar pouco confiável em produção, troca-se só esta função por
  * PHPMailer/SMTP sem tocar em quem a chama (checkout-processar.php, webhook).
