@@ -21,6 +21,7 @@ $paginasEstaticas = [
 ];
 
 $posts = db()->query("SELECT slug, updated_at FROM posts WHERE status = 'publicado' ORDER BY publicado_em DESC")->fetchAll();
+$produtos = db()->query("SELECT slug, updated_at FROM produtos WHERE ativo = 1 ORDER BY updated_at DESC")->fetchAll();
 
 echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 ?>
@@ -37,6 +38,14 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
     <loc><?= e($base . '/blog-post.php?slug=' . rawurlencode($post['slug'])) ?></loc>
     <lastmod><?= e(date('Y-m-d', strtotime($post['updated_at']))) ?></lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+<?php endforeach; ?>
+<?php foreach ($produtos as $produto): ?>
+  <url>
+    <loc><?= e($base . '/produto.php?slug=' . rawurlencode($produto['slug'])) ?></loc>
+    <lastmod><?= e(date('Y-m-d', strtotime($produto['updated_at']))) ?></lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
 <?php endforeach; ?>

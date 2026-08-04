@@ -2,5 +2,13 @@ User-agent: *
 Disallow: /admin/
 Disallow: /includes/
 Disallow: /assets/uploads/
+Disallow: /assets/vendor/
+Disallow: /webhooks/
+Disallow: /carrinho.php
+Disallow: /checkout.php
+Disallow: /checkout-processar.php
+Disallow: /frete-calcular.php
+Disallow: /pedido-confirmado.php
+Disallow: /agendar-sessao.php
 
 Sitemap: https://marocamargo.com.br/sitemap.xml
