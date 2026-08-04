@@ -68,7 +68,7 @@ if ($pedido['metodo_pagamento'] === 'pix' && $pedido['status'] === 'pendente' &&
         </div>
       <?php endforeach; ?>
       <div style="display:flex; justify-content:space-between; padding:6px 0; color:var(--text-soft); border-top:1px solid var(--border-soft); margin-top:8px;">
-        <span><?= e(t('checkout.frete')) ?></span>
+        <span><?= e(t('checkout.frete')) ?><?= !empty($pedido['frete_servico']) ? ' (' . e($pedido['frete_servico']) . ')' : '' ?></span>
         <span><?= e(formatar_preco((int) $pedido['frete_centavos'])) ?></span>
       </div>
       <div style="display:flex; justify-content:space-between; font-weight:700; color:var(--text-heading); padding-top:10px;">

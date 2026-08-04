@@ -278,6 +278,7 @@ return [
     'checkout.cidade' => 'Ciudad',
     'checkout.uf' => 'Estado',
     'checkout.pagamento.title' => 'Forma de pago',
+    'checkout.valor_final_aviso' => 'El envío se recalcula y confirma en el momento del pago.',
     'checkout.erro_pagamento' => 'No pudimos procesar el pago. Inténtalo de nuevo.',
     'checkout.erro_campos' => 'Completa todos los campos obligatorios antes de pagar.',
 

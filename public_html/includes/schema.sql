@@ -124,3 +124,9 @@ CREATE TABLE IF NOT EXISTS pedido_itens (
     CONSTRAINT fk_pedido_item_pedido FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE,
     CONSTRAINT fk_pedido_item_produto FOREIGN KEY (produto_id) REFERENCES produtos(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Registra qual serviço de frete (PAC/SEDEX/etc.) foi escolhido no pedido, útil pro admin
+-- e para uma futura geração de etiqueta de envio.
+-- (MySQL não suporta ADD COLUMN IF NOT EXISTS; confira antes com SHOW COLUMNS FROM pedidos
+-- LIKE 'frete_servico' se estiver rodando num banco que já existia antes desta linha.)
+ALTER TABLE pedidos ADD COLUMN frete_servico VARCHAR(50) DEFAULT NULL AFTER frete_centavos;

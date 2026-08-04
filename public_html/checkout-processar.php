@@ -2,6 +2,7 @@
 require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/carrinho.php';
 require_once __DIR__ . '/includes/mercadopago.php';
+require_once __DIR__ . '/includes/melhorenvio.php';
 iniciar_sessao();
 
 header('Content-Type: application/json; charset=utf-8');
@@ -37,13 +38,12 @@ if (empty($itens)) {
 }
 
 $subtotalCentavos = carrinho_subtotal_centavos();
-$freteCentavos = FRETE_PADRAO_CENTAVOS; // Fase 7 substitui por cálculo real via Melhor Envio
-$totalCentavos = $subtotalCentavos + $freteCentavos;
 
 // ---------- Valida dados do cliente e endereço ----------
 $cliente = $corpo['cliente'] ?? [];
 $endereco = $corpo['endereco'] ?? [];
 $formData = $corpo['form_data'] ?? [];
+$freteServicoEscolhido = $corpo['frete_servico_escolhido'] ?? null; // só usado para tentar casar com a opção; preço nunca vem daqui
 
 $nome = trim((string) ($cliente['nome'] ?? ''));
 $email = trim((string) ($cliente['email'] ?? ''));
@@ -72,6 +72,33 @@ if ($paymentMethodId === '') {
 $isPix = $paymentMethodId === 'pix';
 $metodoPagamento = $isPix ? 'pix' : ((string) ($formData['payment_type_id'] ?? '') === 'debit_card' ? 'debit_card' : 'credit_card');
 
+// ---------- Recalcula o frete no servidor, a partir do CEP validado — nunca do preço exibido no cliente ----------
+$freteCentavos = FRETE_PADRAO_CENTAVOS;
+$freteServico = null;
+if (melhor_envio_configurado()) {
+    try {
+        $opcoesFrete = me_calcular_frete($cep, $itens);
+        if (!empty($opcoesFrete)) {
+            $escolhida = null;
+            if ($freteServicoEscolhido !== null) {
+                foreach ($opcoesFrete as $opcao) {
+                    if ($opcao['servico'] === $freteServicoEscolhido) {
+                        $escolhida = $opcao;
+                        break;
+                    }
+                }
+            }
+            $escolhida ??= $opcoesFrete[0]; // mais barata, se a escolhida não existir mais na recotação
+            $freteCentavos = $escolhida['preco_centavos'];
+            $freteServico = $escolhida['servico'];
+        }
+    } catch (MelhorEnvioException $e) {
+        error_log('[checkout] Falha ao recalcular frete para pedido: ' . $e->getMessage());
+        // segue com FRETE_PADRAO_CENTAVOS — não bloqueia a venda por uma instabilidade do Melhor Envio
+    }
+}
+$totalCentavos = $subtotalCentavos + $freteCentavos;
+
 // ---------- Cria o pedido como "pendente" antes de chamar o Mercado Pago (garante rastro mesmo se a API falhar) ----------
 $codigo = gerar_codigo_pedido();
 db()->beginTransaction();
@@ -79,12 +106,12 @@ try {
     $stmt = db()->prepare('INSERT INTO pedidos
         (codigo, cliente_nome, cliente_email, cliente_telefone, cliente_cpf,
          endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_uf,
-         subtotal_centavos, frete_centavos, total_centavos, metodo_pagamento, status, ip_criacao)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+         subtotal_centavos, frete_centavos, frete_servico, total_centavos, metodo_pagamento, status, ip_criacao)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
     $stmt->execute([
         $codigo, $nome, $email, $telefone ?: null, $cpf,
         $cep, $logradouro, $numero, $complemento ?: null, $bairro, $cidade, $uf,
-        $subtotalCentavos, $freteCentavos, $totalCentavos, $metodoPagamento, 'pendente', $_SERVER['REMOTE_ADDR'] ?? null,
+        $subtotalCentavos, $freteCentavos, $freteServico, $totalCentavos, $metodoPagamento, 'pendente', $_SERVER['REMOTE_ADDR'] ?? null,
     ]);
     $pedidoId = (int) db()->lastInsertId();
 

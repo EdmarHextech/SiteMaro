@@ -278,6 +278,7 @@ return [
     'checkout.cidade' => 'City',
     'checkout.uf' => 'State',
     'checkout.pagamento.title' => 'Payment method',
+    'checkout.valor_final_aviso' => 'Shipping is recalculated and confirmed at the moment of payment.',
     'checkout.erro_pagamento' => 'We couldn\'t process the payment. Please try again.',
     'checkout.erro_campos' => 'Fill in all required fields before paying.',
 

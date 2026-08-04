@@ -117,8 +117,20 @@ O front-end (todas as páginas públicas e a navegação) está completo. O back
 | Blog | ✅ | ✅ `/admin/posts.php` |
 | Galeria de fotos | ✅ | ✅ `/admin/galeria.php` |
 | Loja — catálogo (livro + sessões) | ✅ | ✅ `/admin/produtos.php` |
-| Loja — carrinho + checkout Mercado Pago (produto físico, frete fixo) | ✅ | ✅ código completo (`checkout.php`, `checkout-processar.php`, `webhooks/mercadopago.php`, `/admin/pedidos.php`) — **requer credenciais reais do Mercado Pago para funcionar** (ver abaixo); sem elas, a loja mostra automaticamente "pagamento em configuração" com CTA via WhatsApp |
-| Loja — frete real (Melhor Envio), produtos de sessão + agendamento pós-compra | CTA via WhatsApp (provisório) | pendente |
+| Loja — carrinho + checkout Mercado Pago (produto físico) | ✅ | ✅ código completo (`checkout.php`, `checkout-processar.php`, `webhooks/mercadopago.php`, `/admin/pedidos.php`) — **requer credenciais reais do Mercado Pago para funcionar** (ver abaixo); sem elas, a loja mostra automaticamente "pagamento em configuração" com CTA via WhatsApp |
+| Loja — frete real via Melhor Envio | ✅ | ✅ código completo (`includes/melhorenvio.php`, `frete-calcular.php`) — **requer token real do Melhor Envio**; sem ele, usa automaticamente um frete fixo (`FRETE_PADRAO_CENTAVOS`) sem quebrar o checkout |
+| Loja — produtos de sessão + agendamento pós-compra | CTA via WhatsApp (provisório) | pendente |
+
+### Credenciais do Melhor Envio (opcional — sem ela, usa frete fixo)
+
+1. Criar conta grátis em https://melhorenvio.com.br e gerar um token em "Gerenciar > Tokens" (comece pelo ambiente sandbox: https://sandbox.melhorenvio.com.br).
+2. Em `config.local.php`:
+   ```php
+   putenv('MELHOR_ENVIO_TOKEN=xxxx');
+   putenv('MELHOR_ENVIO_CEP_ORIGEM=00000000'); // CEP de onde ela despacha os pedidos
+   putenv('MELHOR_ENVIO_SANDBOX=1'); // trocar para 0 só em produção
+   ```
+3. Cadastrar peso/dimensões dos produtos físicos em `/admin/produto-form.php` (campos já existem) — sem isso, o cálculo usa valores padrão genéricos.
 
 ### Credenciais do Mercado Pago (bloqueante para o checkout funcionar)
 

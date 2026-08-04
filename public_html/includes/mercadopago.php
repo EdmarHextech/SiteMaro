@@ -32,7 +32,7 @@ function mp_request(string $metodo, string $endpoint, ?array $corpo = null, ?str
     $resposta = curl_exec($ch);
     $erroCurl = curl_error($ch);
     $statusHttp = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
+    // curl_close() é no-op desde PHP 8.0 e foi descontinuado no PHP 8.5 (gera warning) — omitido de propósito.
 
     if ($resposta === false) {
         throw new MercadoPagoException('Falha de conexão com o Mercado Pago: ' . $erroCurl);

@@ -39,12 +39,13 @@ $total = $subtotal + $frete;
       <?php endforeach; ?>
       <div style="display:flex; justify-content:space-between; font-size:0.92rem; padding:6px 0; color:var(--text-soft); border-top:1px solid var(--border-soft); margin-top:8px;">
         <span><?= e(t('checkout.frete')) ?></span>
-        <span><?= e(formatar_preco($frete)) ?></span>
+        <span id="resumoFrete"><?= e(formatar_preco($frete)) ?></span>
       </div>
       <div style="display:flex; justify-content:space-between; font-weight:700; font-size:1.1rem; color:var(--text-heading); padding-top:10px;">
         <span><?= e(t('checkout.total')) ?></span>
-        <span><?= e(formatar_preco($total)) ?></span>
+        <span id="resumoTotal"><?= e(formatar_preco($total)) ?></span>
       </div>
+      <p class="form-hint" style="margin-top:8px;"><?= e(t('checkout.valor_final_aviso')) ?></p>
     </div>
 
     <?php if (!mp_configurado()): ?>
@@ -91,6 +92,7 @@ $total = $subtotal + $frete;
             <input class="form-control" type="text" id="endereco_numero" required>
           </div>
         </div>
+        <div id="freteOpcoes" class="frete-opcoes"></div>
         <div class="form-group">
           <label for="endereco_logradouro"><?= e(t('checkout.logradouro')) ?></label>
           <input class="form-control" type="text" id="endereco_logradouro" required>
@@ -124,12 +126,26 @@ $total = $subtotal + $frete;
 </section>
 
 <?php if (mp_configurado()): ?>
+<script src="/assets/js/frete.js"></script>
 <script src="https://sdk.mercadopago.com/js/v2"></script>
 <script>
 (function () {
   var mp = new MercadoPago(<?= json_encode(MP_PUBLIC_KEY) ?>, { locale: 'pt-BR' });
   var erroBox = document.getElementById('checkoutErro');
   var csrfToken = <?= json_encode(csrf_token()) ?>;
+  var subtotalCentavos = <?= json_encode($subtotal) ?>;
+  var freteSelecionado = null; // atualizado via evento 'frete:selecionado' (assets/js/frete.js)
+
+  function formatarPreco(centavos) {
+    return 'R$ ' + (centavos / 100).toFixed(2).replace('.', ',');
+  }
+
+  document.addEventListener('frete:selecionado', function (evt) {
+    freteSelecionado = evt.detail;
+    var frete = freteSelecionado ? freteSelecionado.precoCentavos : <?= json_encode($frete) ?>;
+    document.getElementById('resumoFrete').textContent = formatarPreco(frete);
+    document.getElementById('resumoTotal').textContent = formatarPreco(subtotalCentavos + frete);
+  });
 
   function mostrarErro(msg) {
     erroBox.textContent = msg;
@@ -173,6 +189,7 @@ $total = $subtotal + $frete;
         var payload = {
           csrf_token: csrfToken,
           form_data: formData,
+          frete_servico_escolhido: freteSelecionado ? freteSelecionado.servico : null,
           cliente: {
             nome: document.getElementById('cliente_nome').value.trim(),
             email: document.getElementById('cliente_email').value.trim(),

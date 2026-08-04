@@ -567,6 +567,21 @@ ul { padding-left: 1.2em; }
 .produto-card__preco { color: var(--teal-600); font-weight: 700; margin: 0; }
 [data-theme="dark"] .produto-card__preco { color: var(--teal-300); }
 
+/* ---------- Frete ---------- */
+.frete-opcoes { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 20px; }
+.frete-opcao {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  color: var(--text-body);
+  cursor: pointer;
+}
+.frete-opcao input { width: 16px; height: 16px; }
+
 /* ---------- Contato ---------- */
 .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
 .contact-list { list-style: none; padding: 0; display: grid; gap: 16px; }

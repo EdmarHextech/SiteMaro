@@ -278,6 +278,7 @@ return [
     'checkout.cidade' => 'Cidade',
     'checkout.uf' => 'UF',
     'checkout.pagamento.title' => 'Forma de pagamento',
+    'checkout.valor_final_aviso' => 'O frete é recalculado e confirmado no momento do pagamento.',
     'checkout.erro_pagamento' => 'Não foi possível processar o pagamento. Tente novamente.',
     'checkout.erro_campos' => 'Preencha todos os campos obrigatórios antes de pagar.',
 

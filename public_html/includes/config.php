@@ -55,8 +55,22 @@ function mp_configurado(): bool
     return MP_PUBLIC_KEY !== '' && MP_ACCESS_TOKEN !== '';
 }
 
-// Frete fixo provisório (a Fase 7 substitui isso por cálculo real via Melhor Envio).
+// Frete fixo — usado como fallback se o cálculo via Melhor Envio falhar ou não estiver configurado.
 define('FRETE_PADRAO_CENTAVOS', (int) (getenv('FRETE_PADRAO_CENTAVOS') ?: 1500));
+
+// ---------- Melhor Envio (cálculo real de frete) ----------
+// A API gratuita antiga dos Correios foi descontinuada; a API oficial atual exige contrato
+// empresarial + cartão de postagem. Melhor Envio é o caminho padrão do e-commerce brasileiro
+// pequeno: conta grátis, sem contrato, em https://melhorenvio.com.br (cadastro) — gerar um
+// token de API em "Gerenciar > Tokens", e o CEP de origem é de onde ela despacha os pedidos.
+define('MELHOR_ENVIO_TOKEN', getenv('MELHOR_ENVIO_TOKEN') ?: '');
+define('MELHOR_ENVIO_CEP_ORIGEM', getenv('MELHOR_ENVIO_CEP_ORIGEM') ?: '');
+define('MELHOR_ENVIO_SANDBOX', (getenv('MELHOR_ENVIO_SANDBOX') ?: '1') === '1');
+
+function melhor_envio_configurado(): bool
+{
+    return MELHOR_ENVIO_TOKEN !== '' && MELHOR_ENVIO_CEP_ORIGEM !== '';
+}
 
 // ---------- Agendamento (Cal.com) ----------
 // Conta Cal.com da Maro (ou, em desenvolvimento, uma conta sandbox própria do dev) — sem "@", só o username.

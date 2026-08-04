@@ -67,7 +67,7 @@ require __DIR__ . '/includes/admin_header.php';
       </div>
     <?php endforeach; ?>
     <div style="display:flex; justify-content:space-between; padding-top:10px; border-top:1px solid var(--border-soft); margin-top:8px;">
-      <span>Frete</span><span><?= e(formatar_preco((int) $pedido['frete_centavos'])) ?></span>
+      <span>Frete<?= !empty($pedido['frete_servico']) ? ' (' . e($pedido['frete_servico']) . ')' : '' ?></span><span><?= e(formatar_preco((int) $pedido['frete_centavos'])) ?></span>
     </div>
     <div style="display:flex; justify-content:space-between; font-weight:700; color:var(--text-heading);">
       <span>Total</span><span><?= e(formatar_preco((int) $pedido['total_centavos'])) ?></span>
