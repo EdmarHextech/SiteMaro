@@ -58,3 +58,28 @@ CREATE TABLE IF NOT EXISTS galeria_fotos (
     INDEX idx_evento_id (evento_id),
     CONSTRAINT fk_galeria_evento FOREIGN KEY (evento_id) REFERENCES eventos(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------- Loja ----------
+CREATE TABLE IF NOT EXISTS produtos (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    tipo ENUM('fisico', 'sessao') NOT NULL DEFAULT 'fisico',
+    nome VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) NOT NULL UNIQUE,
+    descricao TEXT DEFAULT NULL,
+    preco_centavos INT UNSIGNED NOT NULL,
+    imagem VARCHAR(255) DEFAULT NULL,
+    permite_dedicatoria TINYINT(1) NOT NULL DEFAULT 0,
+    -- Campos usados só por produtos físicos (cálculo de frete via Melhor Envio, fase futura)
+    peso_gramas SMALLINT UNSIGNED DEFAULT NULL,
+    altura_cm DECIMAL(6,2) DEFAULT NULL,
+    largura_cm DECIMAL(6,2) DEFAULT NULL,
+    comprimento_cm DECIMAL(6,2) DEFAULT NULL,
+    -- Campos usados só por produtos de sessão (agendamento via Cal.com, fase futura)
+    duracao_minutos SMALLINT UNSIGNED DEFAULT NULL,
+    calcom_link VARCHAR(500) DEFAULT NULL,
+    estoque SMALLINT UNSIGNED DEFAULT NULL,
+    ativo TINYINT(1) NOT NULL DEFAULT 1,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_tipo_ativo (tipo, ativo)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -227,6 +227,15 @@ return [
     'loja.soon.desc' => 'Estamos preparando la compra directa del libro (con opción de dedicatoria) y de las sesiones de coaching y consultoría. Mientras tanto, el libro ya está disponible en Amazon y puedes agendar una conversación directamente con Maro.',
     'loja.soon.cta_amazon' => 'Comprar en Amazon',
     'loja.soon.cta_agendar' => 'Agendar una conversación',
+    'loja.section.livro' => 'El libro',
+    'loja.section.sessoes' => 'Sesiones de coaching y consultoría',
+    'loja.not_found.title' => 'Producto no encontrado',
+    'loja.not_found.cta' => 'Volver a la tienda',
+    'loja.produto.minutos' => 'minutos',
+    'loja.produto.dedicatoria' => 'Disponible con dedicatoria/autógrafo — coordina con Maro.',
+    'loja.produto.checkout_em_breve' => 'La compra online directa está en camino. Mientras tanto, escribe a Maro por WhatsApp para cerrar este pedido.',
+    'loja.produto.cta_whatsapp' => 'Comprar por WhatsApp',
+    'loja.produto.whatsapp_msg' => '¡Hola, Maro! Quiero comprar:',
 
     // Contacto
     'contato.title' => 'Contacto — Maro Camargo',

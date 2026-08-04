@@ -116,7 +116,8 @@ O front-end (todas as páginas públicas e a navegação) está completo. O back
 | Agendar horário (Cal.com) | ✅ | requer conta Cal.com real da Maro (por enquanto aponta para uma conta de testes) |
 | Blog | ✅ | ✅ `/admin/posts.php` |
 | Galeria de fotos | ✅ | ✅ `/admin/galeria.php` |
-| Loja (livro + sessões, Mercado Pago, frete) | ✅ ("Em breve") | pendente |
+| Loja — catálogo (livro + sessões) | ✅ | ✅ `/admin/produtos.php` |
+| Loja — checkout (Mercado Pago), frete, agendamento pós-compra | CTA via WhatsApp (provisório) | pendente |
 
 ## Atualizando a agenda
 

@@ -21,13 +21,30 @@ function formatar_data_evento(string $data, string $hora): array
     ];
 }
 
-/** Gera um slug (URL amigável) a partir de um texto livre, ex: "Título Ótimo!" -> "titulo-otimo". */
+const SLUG_MAPA_ACENTOS = [
+    'á' => 'a', 'à' => 'a', 'â' => 'a', 'ã' => 'a', 'ä' => 'a',
+    'é' => 'e', 'è' => 'e', 'ê' => 'e', 'ë' => 'e',
+    'í' => 'i', 'ì' => 'i', 'î' => 'i', 'ï' => 'i',
+    'ó' => 'o', 'ò' => 'o', 'ô' => 'o', 'õ' => 'o', 'ö' => 'o',
+    'ú' => 'u', 'ù' => 'u', 'û' => 'u', 'ü' => 'u',
+    'ç' => 'c', 'ñ' => 'n', 'ý' => 'y',
+    'Á' => 'A', 'À' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Ä' => 'A',
+    'É' => 'E', 'È' => 'E', 'Ê' => 'E', 'Ë' => 'E',
+    'Í' => 'I', 'Ì' => 'I', 'Î' => 'I', 'Ï' => 'I',
+    'Ó' => 'O', 'Ò' => 'O', 'Ô' => 'O', 'Õ' => 'O', 'Ö' => 'O',
+    'Ú' => 'U', 'Ù' => 'U', 'Û' => 'U', 'Ü' => 'U',
+    'Ç' => 'C', 'Ñ' => 'N', 'Ý' => 'Y',
+];
+
+/**
+ * Gera um slug (URL amigável) a partir de um texto livre, ex: "Título Ótimo!" -> "titulo-otimo".
+ * Usa um mapa de acentos manual em vez de iconv//TRANSLIT: esse comportamento varia entre
+ * plataformas (testado: macOS produz "sess~ao" para "Sessão" onde Linux produziria "sessao"),
+ * o que geraria slugs diferentes em dev e no servidor de produção.
+ */
 function gerar_slug(string $texto): string
 {
-    $transliterado = @iconv('UTF-8', 'ASCII//TRANSLIT', $texto);
-    if ($transliterado === false) {
-        $transliterado = $texto;
-    }
+    $transliterado = strtr($texto, SLUG_MAPA_ACENTOS);
     $slug = strtolower($transliterado);
     $slug = preg_replace('~[^a-z0-9]+~', '-', $slug);
     $slug = trim($slug, '-');
@@ -157,6 +174,69 @@ function buscar_foto_galeria(int $id): ?array
     $stmt->execute([$id]);
     $foto = $stmt->fetch();
     return $foto ?: null;
+}
+
+// ---------- Loja ----------
+function formatar_preco(int $centavos): string
+{
+    return 'R$ ' . number_format($centavos / 100, 2, ',', '.');
+}
+
+function buscar_produtos(?string $tipo = null, bool $apenasAtivos = true): array
+{
+    $sql = 'SELECT * FROM produtos WHERE 1=1';
+    $params = [];
+    if ($tipo !== null) {
+        $sql .= ' AND tipo = ?';
+        $params[] = $tipo;
+    }
+    if ($apenasAtivos) {
+        $sql .= ' AND ativo = 1';
+    }
+    $sql .= ' ORDER BY tipo ASC, nome ASC';
+    $stmt = db()->prepare($sql);
+    $stmt->execute($params);
+    return $stmt->fetchAll();
+}
+
+function buscar_produto(int $id): ?array
+{
+    $stmt = db()->prepare('SELECT * FROM produtos WHERE id = ?');
+    $stmt->execute([$id]);
+    $produto = $stmt->fetch();
+    return $produto ?: null;
+}
+
+function buscar_produto_por_slug(string $slug): ?array
+{
+    $stmt = db()->prepare('SELECT * FROM produtos WHERE slug = ? AND ativo = 1');
+    $stmt->execute([$slug]);
+    $produto = $stmt->fetch();
+    return $produto ?: null;
+}
+
+function produto_slug_em_uso(string $slug, ?int $ignorarId = null): bool
+{
+    if ($ignorarId) {
+        $stmt = db()->prepare('SELECT COUNT(*) FROM produtos WHERE slug = ? AND id != ?');
+        $stmt->execute([$slug, $ignorarId]);
+    } else {
+        $stmt = db()->prepare('SELECT COUNT(*) FROM produtos WHERE slug = ?');
+        $stmt->execute([$slug]);
+    }
+    return (int) $stmt->fetchColumn() > 0;
+}
+
+function gerar_slug_unico_produto(string $textoBase, ?int $ignorarId = null): string
+{
+    $base = gerar_slug($textoBase);
+    $slug = $base;
+    $i = 2;
+    while (produto_slug_em_uso($slug, $ignorarId)) {
+        $slug = $base . '-' . $i;
+        $i++;
+    }
+    return $slug;
 }
 
 // ---------- Autenticação do admin ----------

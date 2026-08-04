@@ -558,6 +558,15 @@ ul { padding-left: 1.2em; }
 .admin-photo-card__evento { font-weight: 600; font-size: 0.9rem; color: var(--text-heading); margin: 0 0 4px; }
 .admin-photo-card__legenda { font-size: 0.85rem; color: var(--text-soft); margin: 0 0 8px; }
 
+/* ---------- Loja ---------- */
+.produto-card { padding: 0; overflow: hidden; display: flex; flex-direction: column; color: var(--text-body); }
+.produto-card:hover { color: var(--text-body); }
+.produto-card__img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+.produto-card__body { padding: 20px 22px 24px; }
+.produto-card__body h3 { font-size: 1.05rem; margin-bottom: 8px; }
+.produto-card__preco { color: var(--teal-600); font-weight: 700; margin: 0; }
+[data-theme="dark"] .produto-card__preco { color: var(--teal-300); }
+
 /* ---------- Contato ---------- */
 .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
 .contact-list { list-style: none; padding: 0; display: grid; gap: 16px; }

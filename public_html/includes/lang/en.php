@@ -227,6 +227,15 @@ return [
     'loja.soon.desc' => 'We\'re setting up direct purchases of the book (with a signed-copy option) and coaching/consulting sessions. In the meantime, the book is already available on Amazon and you can book a call with Maro directly.',
     'loja.soon.cta_amazon' => 'Buy on Amazon',
     'loja.soon.cta_agendar' => 'Book a call',
+    'loja.section.livro' => 'The book',
+    'loja.section.sessoes' => 'Coaching and consulting sessions',
+    'loja.not_found.title' => 'Product not found',
+    'loja.not_found.cta' => 'Back to the store',
+    'loja.produto.minutos' => 'minutes',
+    'loja.produto.dedicatoria' => 'Available with a signed dedication — arrange it directly with Maro.',
+    'loja.produto.checkout_em_breve' => 'Direct online checkout is on its way. For now, message Maro on WhatsApp to complete this order.',
+    'loja.produto.cta_whatsapp' => 'Buy via WhatsApp',
+    'loja.produto.whatsapp_msg' => 'Hi, Maro! I want to buy:',
 
     // Contact
     'contato.title' => 'Contact — Maro Camargo',
