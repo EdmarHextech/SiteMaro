@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/functions.php';
+require_once __DIR__ . '/../includes/qrcode.php';
 exigir_login();
 
 $id = (int) ($_GET['id'] ?? 0);
@@ -8,6 +9,8 @@ if (!$pedido || empty($pedido['endereco_cep'])) {
     header('Location: /admin/pedidos.php');
     exit;
 }
+
+$qrDataUri = gerar_qrcode_data_uri(ETIQUETA_QR_URL);
 ?><!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -27,6 +30,7 @@ if (!$pedido || empty($pedido['endereco_cep'])) {
   .folha { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
   .etiqueta {
     background: #fff; border: 2px solid #111; border-radius: 4px; padding: 20px 24px;
+    display: flex; justify-content: space-between; gap: 20px;
   }
   .etiqueta__tipo {
     font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
@@ -39,6 +43,9 @@ if (!$pedido || empty($pedido['endereco_cep'])) {
     letter-spacing: 0.04em; border: 2px solid #111; padding: 6px 14px; border-radius: 4px;
   }
   .etiqueta__ref { margin-top: 14px; font-size: 0.8rem; color: #444; }
+  .etiqueta__qr { flex-shrink: 0; text-align: center; width: 96px; }
+  .etiqueta__qr img { width: 88px; height: 88px; display: block; margin: 0 auto; }
+  .etiqueta__qr span { display: block; font-size: 0.68rem; color: #444; margin-top: 4px; line-height: 1.2; }
   .aviso { max-width: 760px; margin: 0 auto 20px; background: #fff3cd; border: 1px solid #ffe08a; border-radius: 6px; padding: 12px 16px; font-size: 0.88rem; }
   @media print {
     body { background: #fff; padding: 0; }
@@ -64,28 +71,40 @@ if (!$pedido || empty($pedido['endereco_cep'])) {
 
 <div class="folha">
   <div class="etiqueta">
-    <div class="etiqueta__tipo">Remetente</div>
-    <div class="etiqueta__nome"><?= e(REMETENTE_NOME) ?></div>
-    <div class="etiqueta__linha">
-      <?= e(REMETENTE_LOGRADOURO ?: '—') ?><?= REMETENTE_NUMERO !== '' ? ', ' . e(REMETENTE_NUMERO) : '' ?>
-      <?= REMETENTE_COMPLEMENTO !== '' ? ' — ' . e(REMETENTE_COMPLEMENTO) : '' ?>
+    <div>
+      <div class="etiqueta__tipo">Remetente</div>
+      <div class="etiqueta__nome"><?= e(REMETENTE_NOME) ?></div>
+      <div class="etiqueta__linha">
+        <?= e(REMETENTE_LOGRADOURO ?: '—') ?><?= REMETENTE_NUMERO !== '' ? ', ' . e(REMETENTE_NUMERO) : '' ?>
+        <?= REMETENTE_COMPLEMENTO !== '' ? ' — ' . e(REMETENTE_COMPLEMENTO) : '' ?>
+      </div>
+      <div class="etiqueta__linha"><?= e(REMETENTE_BAIRRO) ?></div>
+      <div class="etiqueta__linha"><?= e(REMETENTE_CIDADE) ?> <?= REMETENTE_UF !== '' ? '- ' . e(REMETENTE_UF) : '' ?></div>
+      <div class="etiqueta__cep">CEP <?= e(formatar_cep(REMETENTE_CEP)) ?></div>
     </div>
-    <div class="etiqueta__linha"><?= e(REMETENTE_BAIRRO) ?></div>
-    <div class="etiqueta__linha"><?= e(REMETENTE_CIDADE) ?> <?= REMETENTE_UF !== '' ? '- ' . e(REMETENTE_UF) : '' ?></div>
-    <div class="etiqueta__cep">CEP <?= e(formatar_cep(REMETENTE_CEP)) ?></div>
+    <div class="etiqueta__qr">
+      <img src="<?= e($qrDataUri) ?>" alt="QR code para o site da Maro Camargo">
+      <span>conheça a Maro</span>
+    </div>
   </div>
 
   <div class="etiqueta">
-    <div class="etiqueta__tipo">Destinatário</div>
-    <div class="etiqueta__nome"><?= e($pedido['cliente_nome']) ?></div>
-    <div class="etiqueta__linha">
-      <?= e($pedido['endereco_logradouro'] ?? '') ?><?= !empty($pedido['endereco_numero']) ? ', ' . e($pedido['endereco_numero']) : '' ?>
-      <?= !empty($pedido['endereco_complemento']) ? ' — ' . e($pedido['endereco_complemento']) : '' ?>
+    <div>
+      <div class="etiqueta__tipo">Destinatário</div>
+      <div class="etiqueta__nome"><?= e($pedido['cliente_nome']) ?></div>
+      <div class="etiqueta__linha">
+        <?= e($pedido['endereco_logradouro'] ?? '') ?><?= !empty($pedido['endereco_numero']) ? ', ' . e($pedido['endereco_numero']) : '' ?>
+        <?= !empty($pedido['endereco_complemento']) ? ' — ' . e($pedido['endereco_complemento']) : '' ?>
+      </div>
+      <div class="etiqueta__linha"><?= e($pedido['endereco_bairro'] ?? '') ?></div>
+      <div class="etiqueta__linha"><?= e($pedido['endereco_cidade'] ?? '') ?> <?= !empty($pedido['endereco_uf']) ? '- ' . e($pedido['endereco_uf']) : '' ?></div>
+      <div class="etiqueta__cep">CEP <?= e(formatar_cep($pedido['endereco_cep'])) ?></div>
+      <div class="etiqueta__ref">Pedido <?= e($pedido['codigo']) ?><?= !empty($pedido['cliente_telefone']) ? ' · Tel: ' . e($pedido['cliente_telefone']) : '' ?></div>
     </div>
-    <div class="etiqueta__linha"><?= e($pedido['endereco_bairro'] ?? '') ?></div>
-    <div class="etiqueta__linha"><?= e($pedido['endereco_cidade'] ?? '') ?> <?= !empty($pedido['endereco_uf']) ? '- ' . e($pedido['endereco_uf']) : '' ?></div>
-    <div class="etiqueta__cep">CEP <?= e(formatar_cep($pedido['endereco_cep'])) ?></div>
-    <div class="etiqueta__ref">Pedido <?= e($pedido['codigo']) ?><?= !empty($pedido['cliente_telefone']) ? ' · Tel: ' . e($pedido['cliente_telefone']) : '' ?></div>
+    <div class="etiqueta__qr">
+      <img src="<?= e($qrDataUri) ?>" alt="QR code para o site da Maro Camargo">
+      <span>conheça a Maro</span>
+    </div>
   </div>
 </div>
 

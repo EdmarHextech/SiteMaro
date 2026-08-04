@@ -102,6 +102,7 @@ Este projeto é propositalmente livre de dependências (sem Composer/npm) — ca
 |---|---|---|
 | [TinyMCE](https://www.tiny.cloud/) (community, self-hosted) | Editor rico do blog (negrito, fontes, imagens) | `assets/vendor/tinymce/`, usado em `admin/post-form.php` |
 | [HTML Purifier](https://htmlpurifier.org/) | Sanitização do HTML do blog antes de salvar (defesa contra XSS armazenado) | `assets/vendor/htmlpurifier/`, usado em `includes/sanitizador.php` |
+| [phpqrcode](https://github.com/t0k4rt/phpqrcode) | Geração do QR code impresso nas etiquetas de expedição | `assets/vendor/phpqrcode/`, usado em `includes/qrcode.php` — patch aplicado para eliminar warnings de depreciação do PHP 8.1+/8.5 (biblioteca é de ~2010, sem manutenção ativa) |
 
 Quando o checkout (Mercado Pago) for implementado, esta tabela ganha PHPMailer (e-mail transacional), se `mail()` nativo não for suficiente.
 
@@ -134,6 +135,11 @@ putenv('REMETENTE_BAIRRO=Centro');
 putenv('REMETENTE_CIDADE=São Paulo');
 putenv('REMETENTE_UF=SP');
 putenv('REMETENTE_CEP=01310200');
+```
+
+Ambas as etiquetas trazem também um QR code apontando para `ETIQUETA_QR_URL` (por padrão, a home do site com parâmetros de UTM — dá pra acompanhar no Google Analytics quantas pessoas escanearam o pacote). Quando decidirem fazer uma landing page de agradecimento dedicada, é só apontar essa constante pra ela em `config.local.php`:
+```php
+putenv('ETIQUETA_QR_URL=https://marocamargo.com.br/obrigada.php');
 ```
 
 ### Credenciais do Cal.com (agendamento geral + agendamento pós-compra de sessões)

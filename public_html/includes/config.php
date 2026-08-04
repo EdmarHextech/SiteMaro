@@ -90,6 +90,11 @@ function remetente_configurado(): bool
     return REMETENTE_LOGRADOURO !== '' && REMETENTE_CIDADE !== '' && REMETENTE_CEP !== '';
 }
 
+// Link do QR code impresso nas etiquetas de expedição. Por padrão vai para a home com
+// parâmetros de UTM (dá pra ver no Google Analytics quantas pessoas escanearam o pacote).
+// Quando ela quiser uma landing page de agradecimento dedicada, é só trocar esta constante.
+define('ETIQUETA_QR_URL', getenv('ETIQUETA_QR_URL') ?: (rtrim(SITE_URL, '/') . '/?utm_source=etiqueta&utm_medium=embalagem'));
+
 // ---------- Agendamento (Cal.com) ----------
 // Conta Cal.com da Maro (ou, em desenvolvimento, uma conta sandbox própria do dev) — sem "@", só o username.
 // Ela mesma configura, dentro do Cal.com, buffers entre compromissos, janelas de disponibilidade e conexão
