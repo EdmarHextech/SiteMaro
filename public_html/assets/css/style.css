@@ -167,6 +167,19 @@ ul { padding-left: 1.2em; }
 .btn-ghost:hover { background: var(--bg-tint); }
 .btn-sm { padding: 9px 18px; font-size: 0.85rem; }
 .btn-danger { background: #b3392f; color: var(--white); }
+
+/* Reafirma a cor de texto desses botões no modo escuro — sem isso, a regra genérica
+   "[data-theme=dark] a" (mais específica que ".btn-xxx" sozinha) vencia e deixava o texto
+   claro demais em cima de fundos claros (ex: botão branco "Ver agenda de palestras"). */
+[data-theme="dark"] .btn-primary { color: var(--teal-800); }
+[data-theme="dark"] .btn-primary:hover { color: var(--teal-900); }
+[data-theme="dark"] .btn-outline,
+[data-theme="dark"] .btn-outline:hover,
+[data-theme="dark"] .btn-accent,
+[data-theme="dark"] .btn-accent:hover,
+[data-theme="dark"] .btn-teal,
+[data-theme="dark"] .btn-teal:hover,
+[data-theme="dark"] .btn-danger { color: var(--white); }
 .btn[disabled] { opacity: 0.5; cursor: not-allowed; }
 
 /* ---------- Header ---------- */

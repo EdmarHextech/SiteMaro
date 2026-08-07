@@ -31,6 +31,7 @@
   <div class="site-footer__bottom">
     <div class="container">
       <p>&copy; <?= date('Y') ?> Maro Camargo. <?= e(t('footer.rights')) ?></p>
+      <p class="site-footer__credit"><?= e(t('footer.credit_prefix')) ?> <a href="https://www.instagram.com/edmarb/" target="_blank" rel="noopener">Edmar Benedito</a></p>
     </div>
   </div>
 </footer>

@@ -99,13 +99,20 @@ define('ETIQUETA_QR_URL', getenv('ETIQUETA_QR_URL') ?: (rtrim(SITE_URL, '/') . '
 // Conta Cal.com da Maro (ou, em desenvolvimento, uma conta sandbox própria do dev) — sem "@", só o username.
 // Ela mesma configura, dentro do Cal.com, buffers entre compromissos, janelas de disponibilidade e conexão
 // com o Google Agenda dela. Aqui só apontamos para os links dos tipos de evento que ela criar lá.
-define('CALCOM_USERNAME', getenv('CALCOM_USERNAME') ?: 'marocamargo');
+// Sem valor padrão de propósito — sem isso configurado, /agende-um-horario.php mostra
+// "Em breve" em vez de tentar carregar um calendário de uma conta que não existe de verdade.
+define('CALCOM_USERNAME', getenv('CALCOM_USERNAME') ?: '');
 // Link de agendamento geral (usado em /agende-um-horario.php). Pode ser trocado por um link específico
 // de "tipo de evento" (ex: CALCOM_USERNAME . '/coaching-60min') quando ela definir as ofertas.
 define('CALCOM_LINK_GERAL', getenv('CALCOM_LINK_GERAL') ?: CALCOM_USERNAME);
 // Segredo do webhook "BOOKING_CREATED" configurado no painel do Cal.com (Settings > Webhooks),
 // usado para validar a assinatura em webhooks/calcom.php antes de confiar no agendamento recebido.
 define('CALCOM_WEBHOOK_SECRET', getenv('CALCOM_WEBHOOK_SECRET') ?: '');
+
+function calcom_configurado(): bool
+{
+    return CALCOM_LINK_GERAL !== '';
+}
 
 // ---------- Admin ----------
 // Usuário e senha de acesso ao painel /admin.

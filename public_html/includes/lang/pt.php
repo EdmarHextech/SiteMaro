@@ -22,6 +22,7 @@ return [
     'footer.connect_heading' => 'Conecte-se',
     'footer.lattes' => 'Currículo Lattes',
     'footer.rights' => 'Todos os direitos reservados.',
+    'footer.credit_prefix' => 'Desenvolvido por',
     'whatsapp.aria_label' => 'Fale no WhatsApp',
 
     'meta.default_description' => 'Maro Camargo — Doutora em Educação, palestrante, consultora e autora de Ponto de Encontro.',
@@ -193,6 +194,9 @@ return [
     'agenda_horario.hero.kicker' => 'Agendamento',
     'agenda_horario.hero.title' => 'Escolha um horário na minha agenda',
     'agenda_horario.hero.lead' => 'Selecione o dia e horário que funcionam melhor para você — a confirmação e o link da chamada chegam automaticamente no seu e-mail.',
+    'agenda_horario.soon.title' => 'Agendamento online em configuração',
+    'agenda_horario.soon.desc' => 'Estamos finalizando o agendamento automático. Por enquanto, fale com a Maro pelo WhatsApp para combinar um horário.',
+    'agenda_horario.soon.whatsapp_msg' => 'Olá, Maro! Gostaria de agendar um horário com você.',
 
     // Blog
     'blog.title' => 'Blog — Maro Camargo',

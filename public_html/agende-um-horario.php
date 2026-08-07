@@ -15,6 +15,18 @@ require __DIR__ . '/includes/header.php';
   </div>
 </section>
 
+<?php if (!calcom_configurado()): ?>
+<section class="section" style="padding-top:0;">
+  <div class="container" style="max-width:640px; text-align:center;">
+    <div class="coming-soon">
+      <span class="coming-soon__badge"><?= e(t('common.coming_soon')) ?></span>
+      <h2><?= e(t('agenda_horario.soon.title')) ?></h2>
+      <p><?= e(t('agenda_horario.soon.desc')) ?></p>
+      <a href="https://wa.me/<?= e(WHATSAPP_NUMBER) ?>?text=<?= urlencode(t('agenda_horario.soon.whatsapp_msg')) ?>" target="_blank" rel="noopener" class="btn btn-teal"><?= e(t('checkout.indisponivel.cta')) ?></a>
+    </div>
+  </div>
+</section>
+<?php else: ?>
 <section class="section">
   <div class="container">
     <div class="card" style="padding:0; overflow:hidden;">
@@ -68,5 +80,6 @@ Cal("ui", {
   layout: "month_view",
 });
 </script>
+<?php endif; ?>
 
 <?php require __DIR__ . '/includes/footer.php'; ?>

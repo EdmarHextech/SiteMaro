@@ -22,6 +22,7 @@ return [
     'footer.connect_heading' => 'Connect',
     'footer.lattes' => 'Lattes CV',
     'footer.rights' => 'All rights reserved.',
+    'footer.credit_prefix' => 'Built by',
     'whatsapp.aria_label' => 'Chat on WhatsApp',
 
     'meta.default_description' => 'Maro Camargo — PhD in Education, speaker, consultant, and author of Ponto de Encontro.',
@@ -193,6 +194,9 @@ return [
     'agenda_horario.hero.kicker' => 'Scheduling',
     'agenda_horario.hero.title' => 'Pick a slot on my calendar',
     'agenda_horario.hero.lead' => 'Choose the day and time that works best for you — the confirmation and call link arrive automatically in your inbox.',
+    'agenda_horario.soon.title' => 'Online scheduling being set up',
+    'agenda_horario.soon.desc' => 'We\'re finishing up automatic scheduling. For now, message Maro on WhatsApp to arrange a time.',
+    'agenda_horario.soon.whatsapp_msg' => 'Hi, Maro! I\'d like to schedule a time with you.',
 
     // Blog
     'blog.title' => 'Blog — Maro Camargo',
