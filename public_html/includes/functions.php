@@ -51,6 +51,61 @@ function gerar_slug(string $texto): string
     return $slug !== '' ? $slug : 'item';
 }
 
+/** Heurística simples: local parece ser um evento online (não faz sentido mostrar mapa/Waze pra isso). */
+function local_parece_online(string $local): bool
+{
+    return stripos($local, 'online') !== false || stripos($local, 'on-line') !== false || stripos($local, 'remoto') !== false;
+}
+
+function link_google_maps(string $endereco): string
+{
+    return 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode($endereco);
+}
+
+function link_waze(string $endereco): string
+{
+    return 'https://waze.com/ul?q=' . rawurlencode($endereco) . '&navigate=yes';
+}
+
+/** Datas de início/fim de um evento como DateTime, assumindo 2h de duração (não temos hora de término cadastrada). */
+function periodo_evento(array $evento): array
+{
+    $inicio = new DateTime($evento['data_evento'] . ' ' . $evento['hora_evento']);
+    $fim = (clone $inicio)->modify('+2 hours');
+    return [$inicio, $fim];
+}
+
+/** Link "adicionar ao Google Agenda" pré-preenchido, sem precisar de API/login. */
+function link_google_calendar(array $evento): string
+{
+    [$inicio, $fim] = periodo_evento($evento);
+    $params = [
+        'action' => 'TEMPLATE',
+        'text' => $evento['titulo'],
+        'dates' => $inicio->format('Ymd\THis') . '/' . $fim->format('Ymd\THis'),
+        'details' => (string) ($evento['descricao'] ?? ''),
+        'location' => $evento['local'],
+        'ctz' => 'America/Sao_Paulo',
+    ];
+    return 'https://calendar.google.com/calendar/render?' . http_build_query($params);
+}
+
+/** Link "adicionar ao Outlook/Office 365" pré-preenchido, sem precisar de API/login. */
+function link_outlook_calendar(array $evento): string
+{
+    [$inicio, $fim] = periodo_evento($evento);
+    $params = [
+        'path' => '/calendar/action/compose',
+        'rru' => 'addevent',
+        'subject' => $evento['titulo'],
+        'startdt' => $inicio->format('Y-m-d\TH:i:s'),
+        'enddt' => $fim->format('Y-m-d\TH:i:s'),
+        'body' => (string) ($evento['descricao'] ?? ''),
+        'location' => $evento['local'],
+    ];
+    return 'https://outlook.office.com/calendar/0/deeplink/compose?' . http_build_query($params);
+}
+
 /** Extrai o ID de um vídeo a partir de uma URL do youtube.com ou youtu.be. Retorna null se não reconhecer o formato. */
 function extrair_youtube_id(?string $url): ?string
 {

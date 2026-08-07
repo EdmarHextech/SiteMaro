@@ -181,6 +181,8 @@ return [
     'agenda.hero.title' => 'Upcoming events',
     'agenda.hero.lead' => 'Date, time, location, and registration for Maro\'s upcoming talks and consulting sessions.',
     'agenda.video_label' => 'Event invitation video',
+    'agenda.ver_mapa' => 'View on map',
+    'agenda.add_calendar' => 'Add to',
     'agenda.empty.title' => 'No events scheduled at the moment',
     'agenda.empty.desc_prefix' => 'Follow Maro on',
     'agenda.empty.desc_link' => 'Instagram',

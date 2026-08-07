@@ -459,6 +459,22 @@ ul { padding-left: 1.2em; }
 .agenda-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .agenda-vagas { font-size: 0.82rem; color: var(--teal-700); font-weight: 600; }
 [data-theme="dark"] .agenda-vagas { color: var(--teal-300); }
+.agenda-extra-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.agenda-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--bg-tint);
+  color: var(--text-body) !important;
+  border: 1px solid var(--border-soft);
+  white-space: nowrap;
+}
+.agenda-chip:hover { background: var(--teal-100); color: var(--text-body) !important; }
+[data-theme="dark"] .agenda-chip:hover { background: var(--teal-800); }
 .agenda-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
 .agenda-empty {
   text-align: center;

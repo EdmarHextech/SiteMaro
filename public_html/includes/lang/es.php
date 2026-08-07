@@ -181,6 +181,8 @@ return [
     'agenda.hero.title' => 'Próximos encuentros',
     'agenda.hero.lead' => 'Fecha, hora, lugar e inscripción para las próximas charlas y consultorías con Maro.',
     'agenda.video_label' => 'Video de invitación al evento',
+    'agenda.ver_mapa' => 'Ver en el mapa',
+    'agenda.add_calendar' => 'Añadir a',
     'agenda.empty.title' => 'No hay eventos programados por el momento',
     'agenda.empty.desc_prefix' => 'Sigue a Maro en',
     'agenda.empty.desc_link' => 'Instagram',
