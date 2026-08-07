@@ -78,9 +78,12 @@ putenv('ADMIN_PASSWORD_HASH=COLE_AQUI_O_HASH_GERADO');
 
 ## Passo 6 — Ativar HTTPS
 
-1. No cPanel, abra **SSL/TLS Status** (ou **SSL/TLS** → "Manage AutoSSL").
-2. Marque `marocamargo.com.br` (e `www.marocamargo.com.br` se aparecer) → **Executar AutoSSL** (Run AutoSSL).
-3. Aguarde alguns minutos — o certificado é emitido automaticamente e de graça.
+**Atenção**: existem duas ferramentas parecidas no cPanel — **"SSL/TLS"** (gerenciar chaves/certificados manualmente, não é essa) e **"SSL/TLS Status"** (a que queremos, roda o AutoSSL com um clique). Use a busca do cPanel e digite exatamente **SSL/TLS Status**.
+
+1. No cPanel, pesquise e abra **SSL/TLS Status**.
+2. Vai aparecer uma lista com os domínios da conta, cada um com uma caixinha de seleção — marque `marocamargo.com.br` (e `www.marocamargo.com.br` se estiver listado separado).
+3. Clique em **Executar AutoSSL** (Run AutoSSL).
+4. Aguarde alguns minutos — o certificado é emitido automaticamente e de graça, sem precisar escolher tamanho de chave nem nada manual.
 
 ## Passo 7 — Testar
 
