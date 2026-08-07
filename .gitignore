@@ -13,3 +13,6 @@ public_html/assets/uploads/*
 # Cache gerado pelo HTML Purifier (regenerado automaticamente, não precisa versionar)
 public_html/includes/cache/htmlpurifier/*
 !public_html/includes/cache/htmlpurifier/.gitkeep
+
+# Pacote de deploy gerado localmente (fica desatualizado rápido, não faz sentido versionar)
+marocamargo-public_html.zip
